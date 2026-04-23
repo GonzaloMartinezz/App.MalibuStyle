@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
+import api from '../api/axios';
+
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -10,17 +12,22 @@ const Login = () => {
   const { loginUser } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
       return toast.error('Por favor, completa todos los campos.');
     }
     
-    // Simulate API Login
-    loginUser({ email, name: email.split('@')[0] });
-    toast.success(`Bienvenido de vuelta, ${email}`, { icon: '🏀' });
-    navigate('/');
+    try {
+      const { data } = await api.post('/auth/login', { email, password });
+      loginUser(data);
+      toast.success(`Bienvenido de vuelta, ${data.name || email}`, { icon: '🏀' });
+      navigate('/');
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Error al iniciar sesión');
+    }
   };
+
 
   return (
     <motion.div 
