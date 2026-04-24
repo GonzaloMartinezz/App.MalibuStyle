@@ -148,7 +148,7 @@ const Home = () => {
               className="absolute inset-0 bg-cover bg-center md:bg-fixed"
               style={{ backgroundImage: "url('https://images.unsplash.com/photo-1504450758481-7338eba7524a?w=1200&q=85')" }}
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-nivis-black/60 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-r from-nivis-black/60 to-transparent" />
             <div className="absolute inset-0 flex items-end p-6 md:p-12">
               <div>
                 <span className="text-[8px] md:text-[10px] font-mono text-nivis-neon uppercase tracking-widest block mb-1 md:mb-2">STREET COURTS</span>
@@ -168,7 +168,7 @@ const Home = () => {
               className="absolute inset-0 bg-cover bg-center md:bg-fixed"
               style={{ backgroundImage: "url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&q=85')" }}
             />
-            <div className="absolute inset-0 bg-gradient-to-l from-nivis-black/60 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-l from-nivis-black/60 to-transparent" />
             <div className="absolute inset-0 flex items-end justify-end p-6 md:p-12">
               <div className="text-right">
                 <span className="text-[8px] md:text-[10px] font-mono text-nivis-neon uppercase tracking-widest block mb-1 md:mb-2">PREMIUM APPAREL</span>
