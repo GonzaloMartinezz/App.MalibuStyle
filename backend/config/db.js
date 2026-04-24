@@ -2,11 +2,12 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/malibustyless');
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    console.log('Intentando conectar a MongoDB...');
+    const conn = await mongoose.connect(process.env.MONGO_URI);
+    console.log(`✅ MongoDB Conectado: ${conn.connection.host}`);
   } catch (error) {
-    console.error(`Error: ${error.message}`);
-    process.exit(1);
+    console.error(`❌ Error de Conexión: ${error.message}`);
+    console.log('El servidor seguirá funcionando, pero las funciones de base de datos no estarán disponibles.');
   }
 };
 
