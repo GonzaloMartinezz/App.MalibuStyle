@@ -2,7 +2,6 @@
 @import "tailwindcss";
 
 @theme {
-  /* NIVIS GEAR THEME V4 */
   --color-nivis-black: #0a0a0a;
   --color-nivis-gray: #262626;
   --color-nivis-light-gray: #333333;
@@ -23,7 +22,13 @@
   }
 
   html {
-    zoom: 0.9;
+    zoom: 0.85;
+  }
+
+  @media (max-width: 1024px) {
+    html {
+      zoom: 1;
+    }
   }
 
   body {
@@ -35,18 +40,10 @@
   }
 
   /* Custom Scrollbar */
-  ::-webkit-scrollbar {
-    width: 4px;
-  }
-  ::-webkit-scrollbar-track {
-    background: #0a0a0a;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #333;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #d4ff3c;
-  }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: #0a0a0a; }
+  ::-webkit-scrollbar-thumb { background: #333; }
+  ::-webkit-scrollbar-thumb:hover { background: #d4ff3c; }
 }
 
 @layer utilities {

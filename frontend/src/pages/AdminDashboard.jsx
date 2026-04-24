@@ -1,285 +1,286 @@
-import React, { useState } from 'react';
-import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell, Legend } from 'recharts';
-import { User, LogOut, Search, PlusCircle, Filter } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { productsData, buzosData } from '../data/productsData';
+
+const allProducts = [...productsData, ...buzosData].map(p => ({
+  ...p, stock: Math.floor(Math.random() * 30) + 5,
+  sizes: { S: Math.floor(Math.random()*10)+1, M: Math.floor(Math.random()*10)+2, L: Math.floor(Math.random()*10)+1, XL: Math.floor(Math.random()*8)+1 },
+  status: 'active'
+}));
 
 const AdminDashboard = () => {
-    const [activeTab, setActiveTab] = useState('home');
-    const { logoutUser } = useAuth();
-    const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('home');
+  const [products, setProducts] = useState(allProducts);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+  const [editForm, setEditForm] = useState({});
+  const [newProduct, setNewProduct] = useState({ name:'', price:'', category:'Remeras Basquet', img:'', stock:0 });
+  const [showAddForm, setShowAddForm] = useState(false);
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
-    const handleLogout = () => {
-        logoutUser();
-        navigate('/');
-    };
+  useEffect(() => {
+    if (!user || user.role !== 'admin') { navigate('/auth'); }
+  }, [user, navigate]);
 
-    // --- SUB-COMPONENT: Estadísticas / Resultados (Basado en imagen Resultados) ---
-    const StatisticsPanel = () => {
-        const miniPieData = [{ name: 'A', value: 80 }, { name: 'B', value: 20 }];
-        return (
-            <div>
-                <h1 style={{ marginBottom: '30px', fontSize: '2rem', color: 'var(--text-main)' }}>Resultados y Estadísticas</h1>
-                
-                <div style={{ display: 'flex', gap: '20px', marginBottom: '30px' }}>
-                    <select style={{ padding: '10px 20px', borderRadius: '8px', background: 'var(--bg-secondary)', color: 'var(--text-muted)', border: '1px solid #333' }}><option>Mes Actual</option></select>
-                    <select style={{ padding: '10px 20px', borderRadius: '8px', background: 'var(--bg-secondary)', color: 'var(--text-muted)', border: '1px solid #333' }}><option>Sucursal Central</option></select>
-                </div>
+  const handleLogout = () => { logout(); navigate('/'); };
+  const totalStock = products.reduce((a,p) => a + (p.stock||0), 0);
+  const totalValue = products.reduce((a,p) => a + p.price * (p.stock||0), 0);
+  const criticalStock = products.filter(p => (p.stock||0) < 8).length;
 
-                <div style={{ background: 'var(--bg-secondary)', padding: '30px', borderRadius: '15px', border: '1px solid rgba(255,255,255,0.05)', marginBottom: '30px' }}>
-                    <h3 style={{ textAlign: 'center', marginBottom: '20px', color: 'var(--text-muted)' }}>Resultados Generales de Engagement</h3>
-                    <div style={{ display: 'flex', justifyContent: 'center', gap: '40px' }}>
-                        <div style={{ background: 'var(--bg-color)', padding: '30px', borderRadius: '12px', border: '1px solid #333', textAlign: 'center', width: '200px' }}>
-                            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '10px' }}>Visitas al Shop (Miles)</p>
-                            <h2 style={{ fontSize: '3rem', color: 'var(--accent-color)' }}>38</h2>
-                        </div>
-                        <div style={{ background: 'var(--bg-color)', padding: '30px', borderRadius: '12px', border: '1px solid #333', textAlign: 'center', width: '200px' }}>
-                            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '10px' }}>Conversión de Compra</p>
-                            <h2 style={{ fontSize: '3rem', color: '#825ee4' }}>29%</h2>
-                        </div>
-                    </div>
-                </div>
+  const startEdit = (p) => { setEditingId(p.id); setEditForm({ name: p.name, price: p.price, stock: p.stock }); };
+  const saveEdit = (id) => {
+    setProducts(prev => prev.map(p => p.id === id ? { ...p, ...editForm, price: Number(editForm.price), stock: Number(editForm.stock) } : p));
+    setEditingId(null);
+  };
+  const deleteProduct = (id) => setProducts(prev => prev.filter(p => p.id !== id));
+  const toggleStatus = (id) => setProducts(prev => prev.map(p => p.id === id ? { ...p, status: p.status === 'active' ? 'paused' : 'active' } : p));
+  const addProduct = () => {
+    if (!newProduct.name || !newProduct.price) return;
+    const np = { ...newProduct, id: `new-${Date.now()}`, price: Number(newProduct.price), stock: Number(newProduct.stock), status:'active',
+      sizes:{S:0,M:0,L:0,XL:0}, description:'Producto nuevo', img: newProduct.img || '/IMG1.jpg' };
+    setProducts(prev => [np, ...prev]);
+    setNewProduct({ name:'', price:'', category:'Remeras Basquet', img:'', stock:0 });
+    setShowAddForm(false);
+  };
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
-                    {[
-                        { title: 'Satisfacción Retorno', val: '4.88' },
-                        { title: 'Devoluciones', val: '1.2' },
-                        { title: 'Calidad Entregas', val: '4.95' },
-                        { title: 'Fidelización', val: '3.25' }
-                    ].map((item, idx) => (
-                        <div key={idx} style={{ background: 'var(--bg-secondary)', padding: '20px', borderRadius: '15px', border: '1px solid rgba(255,255,255,0.05)', textAlign: 'center' }}>
-                            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '15px', height: '40px' }}>{item.title}</p>
-                            <ResponsiveContainer width="100%" height={120}>
-                                <PieChart>
-                                    <Pie data={miniPieData} cx="50%" cy="50%" innerRadius={35} outerRadius={50} dataKey="value">
-                                        <Cell fill="var(--accent-color)" />
-                                        <Cell fill="#333" />
-                                    </Pie>
-                                </PieChart>
-                            </ResponsiveContainer>
-                            <h3 style={{ marginTop: '-75px', marginBottom: '55px', fontSize: '1.5rem' }}>{item.val}</h3>
-                            <a href="#" style={{ color: 'var(--accent-hover)', fontSize: '0.8rem' }}>🔍 Ver detalle</a>
-                        </div>
-                    ))}
-                </div>
+  const tabs = [
+    { id:'home', label:'Dashboard', icon:'📊' },
+    { id:'inventario', label:'Inventario', icon:'📦' },
+    { id:'ventas', label:'Ventas', icon:'💰' },
+    { id:'clientes', label:'Clientes', icon:'👥' },
+    { id:'config', label:'Configuración', icon:'⚙️' },
+  ];
+
+  const s = { card:'bg-[#111] border border-white/5 rounded-xl p-5 md:p-6', label:'text-[9px] font-mono text-white/30 uppercase tracking-widest', val:'text-2xl md:text-3xl font-black mt-1' };
+
+  const HomePanel = () => (
+    <div className="space-y-6">
+      <h1 className="text-2xl md:text-3xl font-black uppercase tracking-tighter">Dashboard</h1>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+        {[
+          { label:'Ventas Totales', val:`$${(totalValue*0.3).toLocaleString()}`, color:'text-nivis-neon' },
+          { label:'Stock Total', val:totalStock, color:'text-white' },
+          { label:'Productos', val:products.length, color:'text-white' },
+          { label:'Stock Crítico', val:criticalStock, color:'text-red-400' },
+        ].map((c,i) => (
+          <div key={i} className={s.card}><p className={s.label}>{c.label}</p><p className={`${s.val} ${c.color}`}>{c.val}</p></div>
+        ))}
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className={s.card}>
+          <h3 className="text-sm font-black uppercase mb-4">Ventas Recientes</h3>
+          <div className="space-y-3">{[
+            { name:'Remera Vol.3', qty:2, total:'$71.200', time:'Hace 2h' },
+            { name:'Buzo Ed.Limitada', qty:1, total:'$55.000', time:'Hace 5h' },
+            { name:'Remera Vol.12', qty:3, total:'$108.600', time:'Hace 1d' },
+          ].map((sale,i) => (
+            <div key={i} className="flex justify-between items-center py-2 border-b border-white/5 last:border-0">
+              <div><p className="text-xs font-bold">{sale.name}</p><p className="text-[9px] text-white/30 font-mono">{sale.time} · {sale.qty}u</p></div>
+              <span className="text-sm font-black text-nivis-neon">{sale.total}</span>
             </div>
-        );
-    };
-
-    // --- SUB-COMPONENT: Clientes (Basado en imagen Pacientes) ---
-    const ClientsPanel = () => {
-        const [search, setSearch] = useState('');
-        return (
-            <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                        <h1 style={{ fontSize: '2rem', color: 'var(--text-main)' }}>Todos mis clientes</h1>
-                        <span style={{ color: 'var(--text-muted)', fontSize: '1.2rem', paddingLeft: '20px', borderLeft: '2px solid #333' }}>87 clientes registrados</span>
-                    </div>
-                    <button className="btn btn-accent" style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '1rem' }}>
-                        <PlusCircle size={20} /> Nuevo Cliente
-                    </button>
-                </div>
-
-                {/* Filtros Bar */}
-                <div style={{ display: 'flex', gap: '20px', marginBottom: '30px', background: 'var(--bg-secondary)', padding: '15px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                    <div style={{ flex: 1, position: 'relative' }}>
-                        <Search style={{ position: 'absolute', left: '15px', top: '12px', color: '#888' }} size={20} />
-                        <input type="text" placeholder="Buscar por nombre o correo electrónico..." value={search} onChange={e => setSearch(e.target.value)} style={{ width: '100%', background: 'var(--bg-color)', border: '1px solid #333', padding: '12px 15px 12px 45px', borderRadius: '8px', color: 'white', outline: 'none' }} />
-                    </div>
-                    <button style={{ background: 'var(--bg-color)', border: '1px solid #333', padding: '0 20px', borderRadius: '8px', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-                        <Filter size={18} /> Filtrar
-                    </button>
-                </div>
-
-                {/* Tabla */}
-                <div style={{ background: 'var(--bg-secondary)', borderRadius: '15px', border: '1px solid rgba(255,255,255,0.05)', overflow: 'hidden' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-                        <thead style={{ background: '#1a2235', color: '#a0aec0' }}>
-                            <tr>
-                                <th style={{ padding: '20px' }}>Cliente</th>
-                                <th style={{ padding: '20px' }}>Última Compra</th>
-                                <th style={{ padding: '20px' }}>LTV (Lifetime Value)</th>
-                                <th style={{ padding: '20px' }}>Fuente de Ingreso</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {[
-                                { name: 'Sofía Valdivia García', email: 'sofi@mail.com', last: 'Hace 9 meses', value: '450.000', source: 'Instagram' },
-                                { name: 'Diego Quispe López', email: 'diego@mail.com', last: 'Hace 11 meses', value: '120.000', source: 'Organico' },
-                                { name: 'Camila Ríos', email: 'cami@mail.com', last: 'Hace 3 días', value: '890.000', source: 'TikTok' },
-                            ].map((client, idx) => (
-                                <tr key={idx} style={{ borderBottom: '1px solid #333', transition: 'background 0.2s', cursor: 'pointer' }} onMouseEnter={e => e.currentTarget.style.background = '#1a1a1a'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
-                                    <td style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '15px' }}>
-                                        <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'linear-gradient(135deg, #00F0FF, #4da8da)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#000', fontWeight: 'bold' }}>
-                                            {client.name.substring(0, 2).toUpperCase()}
-                                        </div>
-                                        <div>
-                                            <p style={{ color: 'var(--accent-color)', fontWeight: '600' }}>{client.name}</p>
-                                            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{client.email}</p>
-                                        </div>
-                                    </td>
-                                    <td style={{ padding: '20px', color: 'var(--text-muted)' }}>{client.last}</td>
-                                    <td style={{ padding: '20px' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                            <span style={{ width: '60px', height: '6px', background: '#333', borderRadius: '3px', display: 'inline-block', position: 'relative' }}>
-                                                <span style={{ position: 'absolute', top: 0, left: 0, height: '100%', width: '60%', background: 'var(--success-color)', borderRadius: '3px' }}></span>
-                                            </span>
-                                            ${client.value}
-                                        </div>
-                                    </td>
-                                    <td style={{ padding: '20px', color: 'var(--text-muted)' }}>{client.source}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        );
-    };
-
-    // --- SUB-COMPONENT: Inventario ---
-    const InventoryPanel = () => {
-        return (
-            <div>
-                <h1 style={{ marginBottom: '30px', fontSize: '2rem', color: 'var(--text-main)' }}>Inventario de Productos</h1>
-                <div style={{ background: 'var(--bg-secondary)', borderRadius: '15px', border: '1px solid rgba(255,255,255,0.05)', overflow: 'hidden' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-                        <thead style={{ background: '#111', color: '#888' }}>
-                            <tr>
-                                <th style={{ padding: '20px' }}>Producto</th>
-                                <th style={{ padding: '20px' }}>Talles Disponibles</th>
-                                <th style={{ padding: '20px' }}>Stock Total</th>
-                                <th style={{ padding: '20px' }}>Estado Ordenes</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style={{ borderBottom: '1px solid #333' }}>
-                                <td style={{ padding: '20px' }}><p style={{ fontWeight: 'bold' }}>Buzo Oversize 'LA' Neón</p><p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Categoría: Buzos</p></td>
-                                <td style={{ padding: '20px', color: 'var(--accent-color)' }}>S, M, L, XL</td>
-                                <td style={{ padding: '20px' }}><span style={{ padding: '5px 12px', background: 'rgba(0,255,102,0.1)', color: 'var(--success-color)', borderRadius: '20px' }}>12 U.</span></td>
-                                <td style={{ padding: '20px', color: 'var(--text-muted)' }}>3 Pendientes de envío</td>
-                            </tr>
-                            <tr style={{ borderBottom: '1px solid #333' }}>
-                                <td style={{ padding: '20px' }}><p style={{ fontWeight: 'bold' }}>Remera Vintage 90s Bulls</p><p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Categoría: Basket</p></td>
-                                <td style={{ padding: '20px', color: 'var(--accent-color)' }}>L, XL</td>
-                                <td style={{ padding: '20px' }}><span style={{ padding: '5px 12px', background: 'rgba(255,42,42,0.1)', color: 'var(--danger-color)', borderRadius: '20px' }}>4 U. (Crítico)</span></td>
-                                <td style={{ padding: '20px', color: 'var(--text-muted)' }}>Ninguna pendiente</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        );
-    };
-
-    // --- SUB-COMPONENT: Home Original ---
-    const HomePanel = () => {
-        // [Mantengo los mocks y componentes originales del Home del Dashboard]
-        const barData1 = [{ name: 'Ene', users: 15 }, { name: 'Feb', users: 5 }, { name: 'Mar', users: 85 }, { name: 'Abr', users: 30 }];
-        const revenueData = [{ name: 'Ene', ingresos: 8, gastos: 1 }, { name: 'Feb', ingresos: 12, gastos: 2 }, { name: 'Mar', ingresos: 28, gastos: 2 }];
-        const pieData = [{ name: 'Zapatillas', value: 400 }, { name: 'Oversize', value: 300 }, { name: 'Accesorios', value: 300 }];
-        const COLORS = ['#00F0FF', '#4da8da', '#111111'];
-
-        return (
-            <div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px', marginBottom: '30px' }}>
-                    {[
-                        { title: 'Ventas Totales', value: '$24.500' }, { title: 'Nuevos Usuarios', value: '3,892' },
-                        { title: 'Pedidos', value: '420' }, { title: 'Stock Crítico', value: '12' }
-                    ].map((card, idx) => (
-                        <div key={idx} style={{ background: 'var(--bg-secondary)', borderRadius: '15px', padding: '20px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                            <h5 style={{ color: 'var(--text-muted)', textTransform: 'uppercase', fontSize: '0.8rem', marginBottom: '5px' }}>{card.title}</h5>
-                            <span style={{ color: 'var(--text-main)', fontSize: '1.5rem', fontWeight: 'bold' }}>{card.value}</span>
-                        </div>
-                    ))}
-                </div>
-
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', marginBottom: '30px' }}>
-                    <div style={{ background: 'var(--bg-secondary)', padding: '20px', borderRadius: '15px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                        <h4 style={{ color: 'var(--text-main)', marginBottom: '20px', fontSize: '1.1rem' }}>Nuevos Clientes 2024</h4>
-                        <ResponsiveContainer width="100%" height={200}>
-                            <BarChart data={barData1}>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#333" />
-                                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#888' }} />
-                                <Bar dataKey="users" fill="var(--accent-color)" barSize={15} />
-                            </BarChart>
-                        </ResponsiveContainer>
-                    </div>
-
-                    <div style={{ background: 'var(--bg-secondary)', padding: '20px', borderRadius: '15px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                        <h4 style={{ color: 'var(--text-main)', marginBottom: '20px', fontSize: '1.1rem' }}>Ingresos por Categoría</h4>
-                        <ResponsiveContainer width="100%" height={200}>
-                            <PieChart>
-                                <Pie data={pieData} cx="50%" cy="50%" innerRadius={50} outerRadius={80} dataKey="value">
-                                    {pieData.map((e, idx) => <Cell key={idx} fill={COLORS[idx % COLORS.length]} />)}
-                                </Pie>
-                            </PieChart>
-                        </ResponsiveContainer>
-                    </div>
-                </div>
-
-                <div style={{ background: 'var(--bg-secondary)', padding: '20px', borderRadius: '15px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                    <h4 style={{ color: 'var(--text-main)', marginBottom: '20px' }}>Ingresos vs Gastos</h4>
-                    <ResponsiveContainer width="100%" height={300}>
-                        <BarChart data={revenueData}>
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#333" />
-                            <XAxis dataKey="name" tickLine={false} tick={{ fill: '#888' }} />
-                            <Bar dataKey="ingresos" fill="var(--accent-color)" barSize={20} />
-                            <Bar dataKey="gastos" fill="#111111" barSize={20} />
-                        </BarChart>
-                    </ResponsiveContainer>
-                </div>
-            </div>
-        );
-    };
-
-    // --- MAIN RENDER ---
-    return (
-        <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-color)' }}>
-            {/* Sidebar Modular */}
-            <div style={{ width: '250px', background: 'var(--bg-secondary)', padding: '30px 20px', borderRight: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column' }}>
-                <h2 style={{ color: 'var(--text-main)', fontWeight: '900', marginBottom: '40px', letterSpacing: '-1px' }}>
-                    <span style={{ color: 'var(--accent-color)' }}>{'{db}'}</span> MALIBU.
-                </h2>
-                <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    {['home', 'clientes', 'inventario', 'estadisticas'].map(tab => (
-                        <li 
-                            key={tab} 
-                            onClick={() => setActiveTab(tab)}
-                            style={{ 
-                                cursor: 'pointer', padding: '12px 15px', borderRadius: '8px', 
-                                display: 'flex', alignItems: 'center', gap: '10px', textTransform: 'capitalize',
-                                background: activeTab === tab ? 'rgba(0,240,255,0.1)' : 'transparent',
-                                color: activeTab === tab ? 'var(--accent-color)' : 'var(--text-muted)',
-                                fontWeight: activeTab === tab ? 'bold' : 'normal',
-                                transition: 'all 0.2s'
-                            }}
-                        >
-                            {tab === 'home' && '🏠'}
-                            {tab === 'clientes' && '👥'}
-                            {tab === 'inventario' && '📦'}
-                            {tab === 'estadisticas' && '📊'}
-                            {tab}
-                        </li>
-                    ))}
-                </ul>
-                <div style={{ marginTop: 'auto' }}>
-                    <button onClick={handleLogout} style={{ width: '100%', background: 'transparent', border: '1px solid #333', padding: '10px', color: 'var(--text-muted)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', cursor: 'pointer' }}>
-                        <LogOut size={18} /> Salir del Panel
-                    </button>
-                </div>
-            </div>
-
-            {/* Dashboard Container Dinámico */}
-            <div style={{ flex: 1, padding: '40px', overflowY: 'auto' }}>
-                {activeTab === 'home' && <HomePanel />}
-                {activeTab === 'clientes' && <ClientsPanel />}
-                {activeTab === 'inventario' && <InventoryPanel />}
-                {activeTab === 'estadisticas' && <StatisticsPanel />}
-            </div>
+          ))}</div>
         </div>
-    );
+        <div className={s.card}>
+          <h3 className="text-sm font-black uppercase mb-4">Top Productos</h3>
+          <div className="space-y-3">{products.slice(0,5).map((p,i) => (
+            <div key={i} className="flex items-center gap-3">
+              <span className="text-xs font-black text-white/20 w-5">{i+1}</span>
+              <div className="w-8 h-8 rounded overflow-hidden bg-white/5"><img src={p.img} className="w-full h-full object-cover" alt=""/></div>
+              <div className="flex-1 min-w-0"><p className="text-xs font-bold truncate">{p.name}</p></div>
+              <span className="text-[10px] font-mono text-nivis-neon">{p.stock}u</span>
+            </div>
+          ))}</div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const InventoryPanel = () => (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <h1 className="text-2xl md:text-3xl font-black uppercase tracking-tighter">Inventario</h1>
+        <button onClick={() => setShowAddForm(!showAddForm)} className="bg-nivis-neon text-black px-4 py-2 text-[10px] font-black uppercase tracking-widest hover:bg-white transition-all">
+          {showAddForm ? '✕ Cancelar' : '+ Nuevo Producto'}
+        </button>
+      </div>
+      {showAddForm && (
+        <div className={`${s.card} border-nivis-neon/30`}>
+          <h3 className="text-sm font-black uppercase mb-4">Agregar Producto</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <input placeholder="Nombre" value={newProduct.name} onChange={e => setNewProduct({...newProduct, name:e.target.value})} className="bg-white/5 border border-white/10 px-3 py-2 text-xs focus:border-nivis-neon outline-none"/>
+            <input placeholder="Precio" type="number" value={newProduct.price} onChange={e => setNewProduct({...newProduct, price:e.target.value})} className="bg-white/5 border border-white/10 px-3 py-2 text-xs focus:border-nivis-neon outline-none"/>
+            <input placeholder="Stock" type="number" value={newProduct.stock} onChange={e => setNewProduct({...newProduct, stock:e.target.value})} className="bg-white/5 border border-white/10 px-3 py-2 text-xs focus:border-nivis-neon outline-none"/>
+            <button onClick={addProduct} className="bg-nivis-neon text-black text-[10px] font-black uppercase tracking-widest hover:bg-white transition-all py-2">Guardar</button>
+          </div>
+        </div>
+      )}
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[700px]">
+          <thead><tr className="border-b border-white/10">
+            {['Producto','Categoría','Precio','Stock','Estado','Acciones'].map(h => (
+              <th key={h} className="text-left text-[9px] font-mono text-white/30 uppercase tracking-widest py-3 px-3">{h}</th>
+            ))}
+          </tr></thead>
+          <tbody>{products.map(p => (
+            <tr key={p.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+              <td className="py-3 px-3">
+                {editingId === p.id ? <input value={editForm.name} onChange={e => setEditForm({...editForm, name:e.target.value})} className="bg-white/5 border border-nivis-neon/50 px-2 py-1 text-xs w-full outline-none"/> :
+                <div className="flex items-center gap-2"><div className="w-8 h-8 rounded overflow-hidden bg-white/5 flex-shrink-0"><img src={p.img} className="w-full h-full object-cover" alt=""/></div><span className="text-xs font-bold truncate max-w-[200px]">{p.name}</span></div>}
+              </td>
+              <td className="py-3 px-3"><span className="text-[9px] font-mono text-white/40 uppercase">{p.category}</span></td>
+              <td className="py-3 px-3">
+                {editingId === p.id ? <input type="number" value={editForm.price} onChange={e => setEditForm({...editForm, price:e.target.value})} className="bg-white/5 border border-nivis-neon/50 px-2 py-1 text-xs w-20 outline-none"/> :
+                <span className="text-xs font-black">${p.price.toLocaleString()}</span>}
+              </td>
+              <td className="py-3 px-3">
+                {editingId === p.id ? <input type="number" value={editForm.stock} onChange={e => setEditForm({...editForm, stock:e.target.value})} className="bg-white/5 border border-nivis-neon/50 px-2 py-1 text-xs w-16 outline-none"/> :
+                <span className={`text-xs font-black px-2 py-0.5 rounded ${(p.stock||0) < 8 ? 'bg-red-500/10 text-red-400' : 'bg-green-500/10 text-green-400'}`}>{p.stock||0}u</span>}
+              </td>
+              <td className="py-3 px-3">
+                <button onClick={() => toggleStatus(p.id)} className={`text-[9px] font-mono uppercase px-2 py-1 rounded cursor-pointer ${p.status==='active' ? 'bg-nivis-neon/10 text-nivis-neon' : 'bg-white/5 text-white/30'}`}>
+                  {p.status==='active' ? '● Activo' : '○ Pausado'}
+                </button>
+              </td>
+              <td className="py-3 px-3">
+                <div className="flex gap-2">
+                  {editingId === p.id ? <>
+                    <button onClick={() => saveEdit(p.id)} className="text-[9px] font-bold text-nivis-neon hover:text-white transition-colors">✓ Guardar</button>
+                    <button onClick={() => setEditingId(null)} className="text-[9px] font-bold text-white/30 hover:text-white transition-colors">✕</button>
+                  </> : <>
+                    <button onClick={() => startEdit(p)} className="text-[9px] font-bold text-white/40 hover:text-nivis-neon transition-colors">Editar</button>
+                    <button onClick={() => deleteProduct(p.id)} className="text-[9px] font-bold text-white/20 hover:text-red-400 transition-colors">Eliminar</button>
+                  </>}
+                </div>
+              </td>
+            </tr>
+          ))}</tbody>
+        </table>
+      </div>
+    </div>
+  );
+
+  const SalesPanel = () => (
+    <div className="space-y-6">
+      <h1 className="text-2xl md:text-3xl font-black uppercase tracking-tighter">Ventas</h1>
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+        {[{ l:'Ingresos Hoy', v:'$126.200' },{ l:'Ingresos Mes', v:'$2.450.000' },{ l:'Ticket Promedio', v:'$42.800' }].map((c,i) => (
+          <div key={i} className={s.card}><p className={s.label}>{c.l}</p><p className={`${s.val} text-nivis-neon`}>{c.v}</p></div>
+        ))}
+      </div>
+      <div className={s.card}>
+        <h3 className="text-sm font-black uppercase mb-4">Últimas Órdenes</h3>
+        <div className="overflow-x-auto"><table className="w-full min-w-[500px]">
+          <thead><tr className="border-b border-white/10">
+            {['Orden','Cliente','Productos','Total','Estado'].map(h => <th key={h} className="text-left text-[9px] font-mono text-white/30 uppercase tracking-widest py-2 px-3">{h}</th>)}
+          </tr></thead>
+          <tbody>{[
+            { id:'#3847', client:'Sofía V.', items:2, total:'$71.200', status:'Enviado' },
+            { id:'#3846', client:'Diego Q.', items:1, total:'$55.000', status:'Preparando' },
+            { id:'#3845', client:'Camila R.', items:3, total:'$108.600', status:'Entregado' },
+            { id:'#3844', client:'Lucas M.', items:1, total:'$35.600', status:'Enviado' },
+          ].map((o,i) => (
+            <tr key={i} className="border-b border-white/5">
+              <td className="py-3 px-3 text-xs font-bold text-nivis-neon">{o.id}</td>
+              <td className="py-3 px-3 text-xs">{o.client}</td>
+              <td className="py-3 px-3 text-xs text-white/40">{o.items} items</td>
+              <td className="py-3 px-3 text-xs font-black">{o.total}</td>
+              <td className="py-3 px-3"><span className={`text-[9px] px-2 py-0.5 rounded font-mono ${o.status==='Entregado'?'bg-green-500/10 text-green-400':o.status==='Enviado'?'bg-blue-500/10 text-blue-400':'bg-yellow-500/10 text-yellow-400'}`}>{o.status}</span></td>
+            </tr>
+          ))}</tbody>
+        </table></div>
+      </div>
+    </div>
+  );
+
+  const ClientsPanel = () => (
+    <div className="space-y-6">
+      <h1 className="text-2xl md:text-3xl font-black uppercase tracking-tighter">Clientes</h1>
+      <div className={s.card}>
+        <div className="overflow-x-auto"><table className="w-full min-w-[500px]">
+          <thead><tr className="border-b border-white/10">
+            {['Cliente','Compras','Valor Total','Última Compra'].map(h => <th key={h} className="text-left text-[9px] font-mono text-white/30 uppercase tracking-widest py-2 px-3">{h}</th>)}
+          </tr></thead>
+          <tbody>{[
+            { name:'Sofía Valdivia', email:'sofi@mail.com', purchases:12, value:'$450.000', last:'Hace 2h' },
+            { name:'Diego Quispe', email:'diego@mail.com', purchases:5, value:'$120.000', last:'Hace 1d' },
+            { name:'Camila Ríos', email:'cami@mail.com', purchases:23, value:'$890.000', last:'Hace 3d' },
+          ].map((c,i) => (
+            <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02]">
+              <td className="py-3 px-3"><div><p className="text-xs font-bold">{c.name}</p><p className="text-[9px] text-white/30 font-mono">{c.email}</p></div></td>
+              <td className="py-3 px-3 text-xs">{c.purchases}</td>
+              <td className="py-3 px-3 text-xs font-black text-nivis-neon">{c.value}</td>
+              <td className="py-3 px-3 text-[10px] text-white/40">{c.last}</td>
+            </tr>
+          ))}</tbody>
+        </table></div>
+      </div>
+    </div>
+  );
+
+  const ConfigPanel = () => (
+    <div className="space-y-6">
+      <h1 className="text-2xl md:text-3xl font-black uppercase tracking-tighter">Configuración</h1>
+      <div className={s.card}>
+        <h3 className="text-sm font-black uppercase mb-4">Info del Negocio</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {[{ l:'Nombre', v:'Malibu Style' },{ l:'Email', v:'contacto@malibu.com' },{ l:'Teléfono', v:'+54 11 2345-6789' },{ l:'Ubicación', v:'Buenos Aires, Argentina' }].map((f,i) => (
+            <div key={i}><p className={s.label + ' mb-2'}>{f.l}</p><input defaultValue={f.v} className="w-full bg-white/5 border border-white/10 px-3 py-2 text-xs focus:border-nivis-neon outline-none"/></div>
+          ))}
+        </div>
+        <button className="mt-4 bg-nivis-neon text-black px-6 py-2 text-[10px] font-black uppercase tracking-widest hover:bg-white transition-all">Guardar Cambios</button>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="flex min-h-screen bg-nivis-black text-white font-sans">
+      {/* Mobile overlay */}
+      {sidebarOpen && <div className="fixed inset-0 bg-black/50 z-30 lg:hidden" onClick={() => setSidebarOpen(false)}/>}
+      
+      {/* Sidebar */}
+      <aside className={`fixed lg:static z-40 top-0 left-0 h-full w-[240px] bg-[#0d0d0d] border-r border-white/5 p-5 flex flex-col transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+        <div className="flex items-center gap-2 mb-8">
+          <div className="w-8 h-8 rounded overflow-hidden"><img src="/Logo.jpg" className="w-full h-full object-cover" alt=""/></div>
+          <span className="font-black text-sm uppercase tracking-tighter">MALIBU <span className="text-nivis-neon">ADMIN</span></span>
+        </div>
+        <nav className="flex-1 space-y-1">
+          {tabs.map(tab => (
+            <button key={tab.id} onClick={() => { setActiveTab(tab.id); setSidebarOpen(false); }}
+              className={`w-full text-left px-3 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-3 transition-all ${activeTab===tab.id ? 'bg-nivis-neon/10 text-nivis-neon' : 'text-white/40 hover:text-white hover:bg-white/5'}`}>
+              <span>{tab.icon}</span>{tab.label}
+            </button>
+          ))}
+        </nav>
+        <div className="border-t border-white/5 pt-4 space-y-2">
+          <button onClick={() => navigate('/')} className="w-full text-left px-3 py-2 text-[10px] font-mono text-white/30 uppercase hover:text-white transition-colors">← Volver al sitio</button>
+          <button onClick={handleLogout} className="w-full text-left px-3 py-2 text-[10px] font-mono text-red-400/60 uppercase hover:text-red-400 transition-colors">Cerrar Sesión</button>
+        </div>
+      </aside>
+
+      {/* Main */}
+      <main className="flex-1 min-w-0">
+        <div className="sticky top-0 z-20 bg-nivis-black/90 backdrop-blur-xl border-b border-white/5 px-4 md:px-8 py-3 flex items-center justify-between">
+          <button onClick={() => setSidebarOpen(true)} className="lg:hidden w-8 h-8 flex flex-col items-center justify-center gap-1 bg-white/5 rounded">
+            <span className="w-4 h-[1.5px] bg-white block"/><span className="w-4 h-[1.5px] bg-white block"/><span className="w-4 h-[1.5px] bg-white block"/>
+          </button>
+          <div className="text-[9px] font-mono text-white/20 uppercase tracking-widest">ADMIN // {activeTab.toUpperCase()}</div>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 bg-nivis-neon rounded-full animate-pulse"/>
+            <span className="text-[9px] font-mono text-white/30 uppercase hidden sm:inline">Online</span>
+          </div>
+        </div>
+        <div className="p-4 md:p-8">
+          {activeTab === 'home' && <HomePanel />}
+          {activeTab === 'inventario' && <InventoryPanel />}
+          {activeTab === 'ventas' && <SalesPanel />}
+          {activeTab === 'clientes' && <ClientsPanel />}
+          {activeTab === 'config' && <ConfigPanel />}
+        </div>
+      </main>
+    </div>
+  );
 };
 
 export default AdminDashboard;

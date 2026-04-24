@@ -24,17 +24,17 @@ export default function Novedades() {
 
   return (
     <div className="min-h-screen font-sans text-white relative overflow-hidden">
-      
+
       {/* Green-Yellow Gradient Background */}
       <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#0d1a0a] to-[#0a0a0a]" />
-        <div className="absolute top-0 right-0 w-[60%] h-[60%] bg-[#d4ff3c]/5 blur-[200px] rounded-full" />
+        <div className="absolute inset-0 bg-linear-to-br from-nivis-black via-[#0d1a0a] to-nivis-black" />
+        <div className="absolute top-0 right-0 w-[60%] h-[60%] bg-nivis-neon/5 blur-[200px] rounded-full" />
         <div className="absolute bottom-0 left-0 w-[50%] h-[50%] bg-[#9dcc20]/5 blur-[200px] rounded-full" />
       </div>
 
       <div className="relative z-10 pt-24 pb-40 px-6">
         <div className="max-w-[1400px] mx-auto">
-          
+
           {/* HEADER */}
           <motion.div
             initial={{ opacity: 0, y: 60 }}
@@ -59,7 +59,7 @@ export default function Novedades() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mb-12 p-6 md:p-10 rounded-xl border border-nivis-neon/20 bg-gradient-to-r from-nivis-neon/10 to-transparent relative overflow-hidden"
+            className="mb-12 p-6 md:p-10 rounded-xl border border-nivis-neon/20 bg-linear-to-r from-nivis-neon/10 to-transparent relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 w-40 h-40 bg-nivis-neon/10 blur-[80px] rounded-full" />
             <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-6">
@@ -75,7 +75,7 @@ export default function Novedades() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {novedadesItems.map((item, index) => {
               const discountedPrice = getDiscountedPrice(item.price, item.discount);
-              
+
               return (
                 <motion.div
                   key={`${item.id}-${index}`}
@@ -87,13 +87,13 @@ export default function Novedades() {
                   className="cursor-pointer group bg-[#111] rounded-lg overflow-hidden border border-white/5 hover:border-nivis-neon/30 transition-all"
                 >
                   {/* Image */}
-                  <div className="relative aspect-[3/4] overflow-hidden">
-                    <img 
-                      src={item.img} 
-                      alt={item.name} 
+                  <div className="relative aspect-3/4 overflow-hidden">
+                    <img
+                      src={item.img}
+                      alt={item.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
 
                     {/* Discount Badge */}
                     <div className="absolute top-3 left-3 bg-nivis-neon text-black px-3 py-1.5 text-[11px] font-black uppercase tracking-wider shadow-lg">
