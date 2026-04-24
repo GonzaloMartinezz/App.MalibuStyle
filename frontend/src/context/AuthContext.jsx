@@ -1,33 +1,40 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+import api from '../api/axios';
 
 const AuthContext = createContext();
 
-export const useAuth = () => useContext(AuthContext);
-
-export const AuthProvider = ({ children }) => {
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Si recarga la página intentamos recuperar del localstorage
-    const storedUser = localStorage.getItem('malibu_user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    const token = localStorage.getItem('nivis_token');
+    if (token) {
+      // Aquí podrías validar el token con el backend
+      // Por ahora simulamos que el usuario está logueado si hay token
+      setUser({ token }); 
     }
+    setLoading(false);
   }, []);
 
-  const loginUser = (userData) => {
-    setUser(userData);
-    localStorage.setItem('malibu_user', JSON.stringify(userData));
+  const login = async (email, password) => {
+    const response = await api.post('/auth/login', { email, password });
+    const { token, user: userData } = response.data;
+    localStorage.setItem('nivis_token', token);
+    setUser({ ...userData, token });
+    return response.data;
   };
 
-  const logoutUser = () => {
+  const logout = () => {
+    localStorage.removeItem('nivis_token');
     setUser(null);
-    localStorage.removeItem('malibu_user');
   };
 
   return (
-    <AuthContext.Provider value={{ user, loginUser, logoutUser }}>
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
-};
+}
+
+export const useAuth = () => useContext(AuthContext);

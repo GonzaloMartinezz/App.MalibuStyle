@@ -15,3 +15,56 @@ export const productsData = Array.from({ length: 26 }, (_, i) => {
     category: 'Remeras Basquet'
   };
 });
+
+export const buzosData = [
+  {
+    id: 'buzo-1',
+    name: 'Buzo Malibu Style Edición Limitada Vol. 1',
+    description: 'Buzo oversize premium, estampado exclusivo basketball culture. Algodón rústico 100% de alta densidad con interior frizado.',
+    price: 55000,
+    img: '/BUZO1.jpg',
+    category: 'Buzos'
+  },
+  {
+    id: 'buzo-2',
+    name: 'Buzo Malibu Style Edición Limitada Vol. 2',
+    description: 'Buzo oversize con diseño urbano inspirado en la cultura streetwear de la NBA. Costuras reforzadas y corte relaxed fit.',
+    price: 55500,
+    img: '/BUZO2.jpg',
+    imgAlt: '/BUZO2.1.jpg',
+    category: 'Buzos'
+  },
+  {
+    id: 'buzo-3',
+    name: 'Buzo Malibu Style Edición Limitada Vol. 3',
+    description: 'Buzo de algodón peinado con estampa transfer de alta resolución. Puños y cintura con elástico premium.',
+    price: 56000,
+    img: '/BUZO3.1.jpg',
+    category: 'Buzos'
+  },
+  {
+    id: 'buzo-4',
+    name: 'Buzo Malibu Style Edición Limitada Vol. 4',
+    description: 'Buzo streetwear oversize con capucha reforzada. Diseño exclusivo inspirado en leyendas del basketball.',
+    price: 57000,
+    img: '/BUZO4.jpg',
+    imgAlt: '/BUZO4.1.jpg',
+    category: 'Buzos'
+  },
+  {
+    id: 'buzo-5',
+    name: 'Buzo Malibu Style Edición Limitada Vol. 5',
+    description: 'Buzo premium con estampa full-color y acabado brushed interior. Ideal para las sesiones de invierno.',
+    price: 58000,
+    img: '/BUZO5.jpg',
+    category: 'Buzos'
+  },
+  {
+    id: 'buzo-6',
+    name: 'Buzo Malibu Style Edición Limitada Vol. 6',
+    description: 'Buzo de edición limitada con arte exclusivo. Tejido de gramaje pesado para máxima durabilidad.',
+    price: 59000,
+    img: '/BUZO6.1.jpg',
+    category: 'Buzos'
+  },
+];
