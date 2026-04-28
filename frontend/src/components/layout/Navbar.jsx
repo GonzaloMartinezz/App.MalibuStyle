@@ -37,6 +37,7 @@ export default function Navbar() {
     { to: '/shop', label: 'Remeras' },
     { to: '/buzos', label: 'Buzos' },
     { to: '/novedades', label: 'Novedades' },
+    { to: '/sobre-mi', label: 'Sobre Mí' },
   ];
 
   return (

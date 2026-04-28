@@ -44,7 +44,7 @@ const Register = () => {
         style={{ backgroundImage: "url('https://images.unsplash.com/photo-1574623452334-1e0ac2b3ccb4?w=1920&q=80')" }}
       >
         <div className="absolute inset-0 bg-black/80" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/70" />
+        <div className="absolute inset-0 bg-linear-to-t from-black via-transparent to-black/70" />
       </div>
 
       {/* Decorative */}
@@ -147,7 +147,7 @@ const Register = () => {
         </div>
       </motion.div>
 
-      <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-nivis-neon/20 to-transparent" />
+      <div className="absolute bottom-0 left-0 w-full h-px bg-linear-to-r from-transparent via-nivis-neon/20 to-transparent" />
     </div>
   );
 };

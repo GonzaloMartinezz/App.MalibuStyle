@@ -26,8 +26,8 @@ export default function Buzos() {
         </motion.div>
       </div>
 
-      {/* GRID — 3 columns, compact cards */}
-      <div className="max-w-[1400px] mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {/* GRID — Compact cards */}
+      <div className="max-w-[1400px] mx-auto px-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {buzosData.map((item, index) => (
           <motion.div
             key={item.id}
@@ -39,13 +39,13 @@ export default function Buzos() {
             className="cursor-pointer group bg-[#111] rounded-lg overflow-hidden border border-white/5 hover:border-white/15 transition-all"
           >
             {/* Image */}
-            <div className="relative aspect-[3/4] overflow-hidden">
+            <div className="relative aspect-3/4 overflow-hidden">
               <img
                 src={item.img}
                 alt={item.name}
                 className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
 
               {/* Price Tag */}
               <div className="absolute top-3 right-3 bg-nivis-neon text-black px-3 py-1.5 text-xs font-black">

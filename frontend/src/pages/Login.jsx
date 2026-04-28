@@ -8,13 +8,21 @@ import api from '../api/axios';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { loginUser } = useAuth();
+  const { loginUser, loginAdmin } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
       return toast.error('Por favor, completa todos los campos.');
+    }
+
+    // Check for hardcoded admin first
+    const admin = loginAdmin(email, password);
+    if (admin) {
+      toast.success(`Modo Administrador Activo`, { icon: '🛡️' });
+      navigate('/');
+      return;
     }
 
     try {

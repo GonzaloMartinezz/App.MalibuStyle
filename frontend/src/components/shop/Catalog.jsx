@@ -50,7 +50,7 @@ export default function Catalog() {
         </motion.div>
 
         {/* GRID — 2 columns, premium cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
           {productsData.map((item, index) => (
             <motion.div
               key={item.id}
@@ -62,7 +62,7 @@ export default function Catalog() {
               className="group cursor-pointer bg-[#111111] rounded-xl overflow-hidden border border-white/5 hover:border-white/15 transition-all duration-500"
             >
               {/* Image */}
-              <div className="relative aspect-[4/3] overflow-hidden bg-[#1a1a1a]">
+              <div className="relative aspect-4/3 overflow-hidden bg-[#1a1a1a]">
                 <img 
                   src={item.img} 
                   alt={item.name} 
@@ -70,7 +70,7 @@ export default function Catalog() {
                 />
                 
                 {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                 {/* Quick Add Button */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -96,11 +96,11 @@ export default function Catalog() {
               {/* Info Bar */}
               <div className="p-6 flex justify-between items-start gap-4">
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-base font-black uppercase tracking-tight truncate mb-1">{item.name}</h3>
+                  <h3 className="text-xs md:text-sm font-black uppercase tracking-tight truncate mb-1">{item.name}</h3>
                   <p className="text-[10px] font-mono text-white/20 uppercase">Ref: UNIT_0{item.id} // {item.category}</p>
                 </div>
-                <div className="text-right flex-shrink-0">
-                  <p className="text-lg font-black tracking-tight">${item.price.toLocaleString()}</p>
+                <div className="text-right shrink-0">
+                  <p className="text-sm md:text-base font-black tracking-tight">${item.price.toLocaleString()}</p>
                   <p className="text-[9px] font-mono text-nivis-neon uppercase tracking-widest flex items-center justify-end gap-1">
                     <span className="w-1.5 h-1.5 bg-nivis-neon rounded-full inline-block" /> IN_STOCK
                   </p>

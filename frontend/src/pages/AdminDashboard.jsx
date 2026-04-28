@@ -124,10 +124,10 @@ const AdminDashboard = () => {
             ))}
           </tr></thead>
           <tbody>{products.map(p => (
-            <tr key={p.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+            <tr key={p.id} className="border-b border-white/5 hover:bg-white/2 transition-colors">
               <td className="py-3 px-3">
                 {editingId === p.id ? <input value={editForm.name} onChange={e => setEditForm({...editForm, name:e.target.value})} className="bg-white/5 border border-nivis-neon/50 px-2 py-1 text-xs w-full outline-none"/> :
-                <div className="flex items-center gap-2"><div className="w-8 h-8 rounded overflow-hidden bg-white/5 flex-shrink-0"><img src={p.img} className="w-full h-full object-cover" alt=""/></div><span className="text-xs font-bold truncate max-w-[200px]">{p.name}</span></div>}
+                <div className="flex items-center gap-2"><div className="w-8 h-8 rounded overflow-hidden bg-white/5 shrink-0"><img src={p.img} className="w-full h-full object-cover" alt=""/></div><span className="text-xs font-bold truncate max-w-[200px]">{p.name}</span></div>}
               </td>
               <td className="py-3 px-3"><span className="text-[9px] font-mono text-white/40 uppercase">{p.category}</span></td>
               <td className="py-3 px-3">

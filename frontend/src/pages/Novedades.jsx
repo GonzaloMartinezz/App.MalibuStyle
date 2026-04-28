@@ -124,6 +124,13 @@ export default function Novedades() {
           </div>
         </div>
       </div>
+      {/* BOTTOM MARQUEE */}
+      <div className="relative z-30 bg-nivis-neon py-4 text-nivis-black overflow-hidden flex whitespace-nowrap mt-20">
+        <div className="flex animate-marquee-slow text-[10px] md:text-xs font-black uppercase tracking-[0.4em]">
+          <span>MALIBU STYLES // BASKETBALL CULTURE // NOVEDADES EXCLUSIVAS // BELGRANO CULTURAL Y DEPORTIVO // </span>
+          <span>MALIBU STYLES // BASKETBALL CULTURE // NOVEDADES EXCLUSIVAS // BELGRANO CULTURAL Y DEPORTIVO // </span>
+        </div>
+      </div>
     </div>
   );
 }

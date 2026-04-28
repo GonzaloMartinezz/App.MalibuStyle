@@ -4,37 +4,17 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { productsData, buzosData } from '../data/productsData';
 import { useNavigate } from 'react-router-dom';
 
-// Combine for carousel
-const carouselItems = [
-  ...productsData.slice(0, 8),
-  ...buzosData.slice(0, 4),
+const allProducts = [...productsData, ...buzosData];
+const marqueeItems = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 15);
+
+const buySteps = [
+  { step: '01', icon: '🔍', title: 'Explorá', desc: 'Navegá por nuestra colección premium de streetwear.' },
+  { step: '02', icon: '🛒', title: 'Seleccioná', desc: 'Elegí tus prendas favoritas y el talle ideal.' },
+  { step: '03', icon: '💳', title: 'Checkout Seguro', desc: 'Completá tu pago con todos los medios disponibles.' },
+  { step: '04', icon: '📦', title: 'Recibí en Casa', desc: 'Enviamos tu pedido a cualquier punto del país.' },
 ];
 
-// Best 6 products for featured
-const featuredProducts = [
-  productsData[0], productsData[4], productsData[9],
-  buzosData[0], buzosData[2], productsData[15]
-];
-
-// Basketball images for parallax mosaic — Unsplash curated
-const basketballImages = [
-  { url: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=90', label: 'GAME DAY' },
-  { url: 'https://images.unsplash.com/photo-1521412644187-c49fa049e84d?w=800&q=90', label: 'CULTURE' },
-  { url: 'https://images.unsplash.com/photo-1587280501635-68a0e82cd5ff?w=800&q=90', label: 'STREET' },
-  { url: 'https://images.unsplash.com/photo-1504450758481-7338eba7524a?w=800&q=90', label: 'COURTS' },
-  { url: 'https://images.unsplash.com/photo-1574623452334-1e0ac2b3ccb4?w=800&q=90', label: 'HUSTLE' },
-  { url: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=90', label: 'STYLE' },
-];
-
-// Features / benefits
-const features = [
-  { icon: '🏀', title: 'Basketball Culture', desc: 'Diseños exclusivos inspirados en la cultura NBA y streetwear urbano.' },
-  { icon: '🧵', title: 'Algodón Premium', desc: 'Confección 100% algodón rústico y peinado de alta densidad.' },
-  { icon: '📦', title: 'Envío Gratis', desc: 'Envío gratuito a todo el país en compras superiores a $50.000.' },
-  { icon: '✨', title: 'Edición Limitada', desc: 'Colecciones únicas con tiradas reducidas para coleccionistas.' },
-];
-
-const Home = () => {
+export default function Home() {
   const containerRef = useRef(null);
   const navigate = useNavigate();
 
@@ -43,354 +23,208 @@ const Home = () => {
     offset: ["start start", "end end"]
   });
 
-  const textX = useTransform(scrollYProgress, [0, 0.4], [0, -600]);
-  const opacity = useTransform(scrollYProgress, [0, 0.12], [1, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 0.05], [1, 0]);
 
   return (
-    <div ref={containerRef} className="bg-nivis-black relative">
-
+    <div ref={containerRef} className="bg-nivis-black relative min-h-screen font-sans">
+      
       {/* ── 1. HERO ── */}
       <motion.div style={{ opacity }}>
         <Hero />
       </motion.div>
 
-      {/* ── 2. PARALLAX TEXT + BASKETBALL MOSAIC ── */}
-      <section className="relative">
-        {/* Basketball image grid — shown ABOVE the ghost text on scroll */}
-        <div className="relative z-20 -mt-8 sm:-mt-12 md:-mt-20 px-3 sm:px-4 md:px-8 pb-0">
-          <div className="max-w-[1600px] mx-auto">
-            {/* Label */}
-            <div className="flex justify-between items-center mb-3 md:mb-5">
-              <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.3em] text-nivis-neon uppercase">ARCHIVE // BASKETBALL CULTURE</span>
-              <span className="text-[8px] sm:text-[9px] font-mono text-white/20 uppercase tracking-widest hidden sm:block">VOL. 01</span>
-            </div>
-
-            {/* Grid — 2 cols mobile, 3 cols tablet, 6 cols desktop */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 md:gap-3">
-              {basketballImages.map((img, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 60 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, delay: idx * 0.08 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  className="group relative aspect-2/3 overflow-hidden rounded-lg bg-[#111] border border-white/5 hover:border-white/20 transition-all cursor-pointer"
-                >
-                  <img
-                    src={img.url}
-                    alt={img.label}
-                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
-                  />
-                  {/* dark overlay */}
-                  <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
-                  {/* label */}
-                  <div className="absolute bottom-0 left-0 right-0 p-2 md:p-3">
-                    <span className="text-[7px] md:text-[8px] font-black font-mono uppercase tracking-[0.2em] text-nivis-neon">
-                      {img.label}
-                    </span>
+      {/* ── 2. INFINITE PRODUCT MARQUEE ── */}
+      <section className="relative z-20 py-8 md:py-12 overflow-hidden bg-nivis-black border-y border-white/5">
+        <div className="absolute top-0 left-0 w-32 h-full bg-linear-to-r from-nivis-black to-transparent z-10 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-32 h-full bg-linear-to-l from-nivis-black to-transparent z-10 pointer-events-none" />
+        
+        <div className="flex w-[200%] animate-marquee hover:[animation-play-state:paused] items-center">
+          <div className="px-8 flex-shrink-0 text-white/30 font-mono text-xs tracking-widest uppercase">ÚLTIMOS INGRESOS</div>
+          {[...marqueeItems, ...marqueeItems].map((item, idx) => (
+            <div 
+              key={`${item.id}-${idx}`}
+              onClick={() => navigate(`/product/${item.id}`)}
+              className="w-[140px] sm:w-[180px] md:w-[220px] flex-shrink-0 mx-2 md:mx-3 cursor-pointer group"
+            >
+              <div className="relative aspect-[4/5] rounded-xl overflow-hidden bg-[#111] border border-white/5 group-hover:border-nivis-neon/50 transition-all duration-500">
+                <img 
+                  src={item.img} 
+                  alt={item.name} 
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
+                />
+                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute bottom-0 left-0 w-full p-3 md:p-4 transform translate-y-2 group-hover:translate-y-0 transition-transform">
+                  <h3 className="text-[10px] md:text-xs font-black text-white uppercase tracking-tighter truncate mb-1">{item.name}</h3>
+                  <div className="flex justify-between items-center">
+                    <span className="text-[8px] font-mono text-white/50 uppercase tracking-widest hidden sm:block">{item.category}</span>
+                    <span className="text-[10px] md:text-xs font-black text-nivis-neon">${item.price.toLocaleString()}</span>
                   </div>
-                  {/* index number */}
-                  <div className="absolute top-2 right-2 text-[8px] md:text-[9px] font-mono text-white/20">
-                    0{idx + 1}
-                  </div>
-                </motion.div>
-              ))}
+                </div>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* ── 3. PARALLAX BIG BASKETBALL SECTION ── */}
-      <section className="relative z-20 mt-8 md:mt-16 overflow-hidden">
-        {/* bg-fixed creates the parallax effect on desktop; on mobile we use normal bg */}
-        <div
-          className="h-[50vh] sm:h-[65vh] md:h-[80vh] bg-cover bg-center md:bg-fixed relative"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1546519638-68e109498ffc?w=1920&q=80')" }}
-        >
-          <div className="absolute inset-0 bg-linear-to-b from-nivis-black via-black/30 to-nivis-black" />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.85 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+      {/* ── 3. GRANDEZA Y ESPÍRITU (BASKETBALL SOUL) ── */}
+      <section className="relative z-20 overflow-hidden bg-nivis-black py-24 md:py-40">
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-nivis-neon/5 blur-[120px] pointer-events-none" />
+        <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+          <div className="flex flex-col lg:flex-row gap-16 md:gap-24 items-center">
+            <motion.div 
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 1.2 }}
               viewport={{ once: true }}
-              className="text-center px-4"
+              className="w-full lg:w-1/2 relative group"
             >
-              <h2 className="text-[16vw] sm:text-[14vw] md:text-[18vw] lg:text-[20vw] font-black uppercase tracking-tighter leading-[0.75] text-white/90 drop-shadow-2xl">
-                <span className="text-white">MALI</span><span className="text-nivis-neon">BU</span>
-              </h2>
-              <p className="text-[9px] sm:text-xs md:text-sm font-mono uppercase tracking-[0.3em] sm:tracking-[0.5em] text-white/40 mt-3 md:mt-6">
-                Basketball Culture × Streetwear
-              </p>
-              <motion.div
-                initial={{ width: 0 }}
-                whileInView={{ width: 60 }}
-                transition={{ duration: 1, delay: 0.5 }}
-                className="h-1 bg-nivis-neon mx-auto mt-3 md:mt-6"
-              />
+              <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
+                <img 
+                  src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=1200&q=90" 
+                  alt="Basketball Culture" 
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
+                />
+                <div className="absolute inset-0 bg-linear-to-t from-black via-transparent to-transparent" />
+              </div>
+              {/* Floating Tech Marker */}
+              <div className="absolute -bottom-6 -right-6 md:-right-10 bg-nivis-neon text-black p-6 md:p-8 rounded-sm shadow-2xl">
+                <p className="text-[10px] font-mono font-black tracking-[0.3em] uppercase mb-1">CULTURA_EST_99</p>
+                <h4 className="text-2xl md:text-3xl font-black uppercase tracking-tighter">BORN IN<br />COURT.</h4>
+              </div>
+            </motion.div>
+            
+            <motion.div 
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1.2, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="w-full lg:w-1/2 space-y-8 md:space-y-12"
+            >
+              <div className="space-y-4 md:space-y-6">
+                <span className="text-[10px] font-mono text-nivis-neon uppercase tracking-[0.5em] block">INTANGIBLE_ASSET</span>
+                <h2 className="text-4xl md:text-7xl font-black uppercase tracking-tighter leading-[0.85] text-white">
+                  Cultura <br />Intransferible.
+                </h2>
+                <p className="text-sm md:text-lg text-white/40 font-mono leading-relaxed uppercase tracking-widest max-w-lg">
+                  No fabricamos ropa, encapsulamos la intensidad del juego. Cada fibra de Malibu Style respira la disciplina del parqué y la libertad del asfalto.
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-8 md:gap-12 py-8 border-y border-white/5">
+                <div>
+                  <h4 className="text-2xl md:text-4xl font-black text-nivis-neon mb-1">PREMIUM</h4>
+                  <p className="text-[9px] font-mono text-white/30 uppercase tracking-[0.2em]">Algodón 24/1 Peinado</p>
+                </div>
+                <div>
+                  <h4 className="text-2xl md:text-4xl font-black text-nivis-neon mb-1">OVERSIZE</h4>
+                  <p className="text-[9px] font-mono text-white/30 uppercase tracking-[0.2em]">Corte Urbano Auténtico</p>
+                </div>
+              </div>
+
+              <button 
+                onClick={() => navigate('/shop')}
+                className="group flex items-center gap-4 text-xs font-black uppercase tracking-[0.3em] hover:text-nivis-neon transition-colors"
+              >
+                <span>Explorar el Archivo</span>
+                <span className="w-12 h-[1px] bg-white group-hover:bg-nivis-neon transition-all group-hover:w-16" />
+              </button>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* ── 4. SECOND PARALLAX — Split dual images ── */}
-      <section className="relative z-20 overflow-hidden">
-        <div className="grid grid-cols-1 md:grid-cols-2 min-h-[40vh] sm:min-h-[50vh] md:min-h-[70vh]">
-          {/* Left panel */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.9 }}
-            viewport={{ once: true }}
-            className="relative h-[40vh] sm:h-[50vh] md:h-auto overflow-hidden"
-          >
-            <div
-              className="absolute inset-0 bg-cover bg-center md:bg-fixed"
-              style={{ backgroundImage: "url('https://images.unsplash.com/photo-1504450758481-7338eba7524a?w=1200&q=85')" }}
-            />
-            <div className="absolute inset-0 bg-linear-to-r from-nivis-black/60 to-transparent" />
-            <div className="absolute inset-0 flex items-end p-6 md:p-12">
-              <div>
-                <span className="text-[8px] md:text-[10px] font-mono text-nivis-neon uppercase tracking-widest block mb-1 md:mb-2">STREET COURTS</span>
-                <h3 className="text-xl sm:text-2xl md:text-4xl font-black uppercase tracking-tighter">Donde nace<br />el estilo.</h3>
-              </div>
+      {/* ── 4. PASOS PARA COMPRAR (CLEANER) ── */}
+      <section className="relative z-20 py-24 md:py-40 bg-[#050505] border-y border-white/5">
+        <div className="max-w-[1400px] mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16 md:mb-24 gap-8">
+            <div className="max-w-xl">
+              <span className="text-[10px] font-mono tracking-[0.5em] text-nivis-neon uppercase block mb-4">WORKFLOW // PROCESO</span>
+              <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none">Tu pedido, <br />Paso a Paso.</h2>
             </div>
-          </motion.div>
-          {/* Right panel */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.9, delay: 0.15 }}
-            viewport={{ once: true }}
-            className="relative h-[40vh] sm:h-[50vh] md:h-auto overflow-hidden"
-          >
-            <div
-              className="absolute inset-0 bg-cover bg-center md:bg-fixed"
-              style={{ backgroundImage: "url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&q=85')" }}
-            />
-            <div className="absolute inset-0 bg-linear-to-l from-nivis-black/60 to-transparent" />
-            <div className="absolute inset-0 flex items-end justify-end p-6 md:p-12">
-              <div className="text-right">
-                <span className="text-[8px] md:text-[10px] font-mono text-nivis-neon uppercase tracking-widest block mb-1 md:mb-2">PREMIUM APPAREL</span>
-                <h3 className="text-xl sm:text-2xl md:text-4xl font-black uppercase tracking-tighter">Hecho para<br />jugar fuerte.</h3>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ── 5. AUTO-MOVING PRODUCT CAROUSEL ── */}
-      <section className="relative z-20 bg-nivis-black py-8 md:py-12 overflow-hidden">
-        <div className="max-w-[1600px] mx-auto px-4 md:px-8 mb-4 md:mb-8 flex justify-between items-center">
-          <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.3em] text-nivis-neon uppercase">FEATURED_ARCHIVE // AUTO_SCROLL</span>
-          <button
-            onClick={() => navigate('/shop')}
-            className="text-[9px] md:text-[10px] font-mono font-bold tracking-[0.2em] uppercase text-white/40 hover:text-nivis-neon transition-colors flex items-center gap-2"
-          >
-            VER TODO
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" strokeWidth="2" /></svg>
-          </button>
-        </div>
-
-        <div className="overflow-hidden">
-          <motion.div
-            animate={{ x: ["0%", "-50%"] }}
-            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-            className="flex gap-3 md:gap-4"
-          >
-            {[...carouselItems, ...carouselItems].map((item, index) => (
-              <div
-                key={`${item.id}-${index}`}
-                onClick={() => navigate(`/product/${item.id}`)}
-                className="flex-none w-[160px] sm:w-[220px] md:w-[320px] cursor-pointer group"
-              >
-                <div className="relative aspect-3/4 overflow-hidden rounded-lg bg-[#161616] border border-white/5 group-hover:border-white/20 transition-all">
-                  <img
-                    src={item.img}
-                    alt={item.name}
-                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
-                  />
-                  <div className="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-2 md:p-5">
-                    <h3 className="text-[9px] sm:text-[11px] md:text-sm font-black uppercase tracking-tight mb-1 truncate">{item.name}</h3>
-                    <div className="flex justify-between items-center">
-                      <span className="text-[7px] md:text-[9px] font-mono text-white/40 uppercase hidden sm:block">{item.category}</span>
-                      <span className="text-[10px] md:text-sm font-black text-nivis-neon">${item.price.toLocaleString()}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ── 6. FEATURES CARDS ── */}
-      <section className="relative z-20 py-12 sm:py-16 md:py-24 px-4 md:px-8 overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute top-0 left-1/4 w-[50%] h-[50%] bg-nivis-neon/3 blur-[200px] rounded-full" />
-          <div className="absolute bottom-0 right-1/4 w-[40%] h-[40%] bg-purple-500/3 blur-[200px] rounded-full" />
-        </div>
-        <div className="max-w-[1400px] mx-auto relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-10 md:mb-16"
-          >
-            <span className="text-[9px] md:text-[10px] font-mono tracking-[0.5em] text-nivis-neon uppercase block mb-3 md:mb-4">¿POR QUÉ ELEGIRNOS?</span>
-            <h2 className="text-3xl sm:text-4xl md:text-6xl font-black uppercase tracking-tighter">La mejor calidad.</h2>
-          </motion.div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
-            {features.map((feat, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-[#111]/80 backdrop-blur-xl border border-white/5 rounded-xl p-4 sm:p-6 md:p-8 hover:border-white/15 transition-all group"
-              >
-                <div className="text-2xl md:text-4xl mb-3 md:mb-6">{feat.icon}</div>
-                <h3 className="text-xs md:text-base font-black uppercase tracking-tight mb-1 md:mb-3 group-hover:text-nivis-neon transition-colors">{feat.title}</h3>
-                <p className="text-[9px] md:text-xs text-white/40 leading-relaxed hidden sm:block">{feat.desc}</p>
-              </motion.div>
-            ))}
+            <p className="text-[10px] font-mono text-white/20 uppercase tracking-widest text-right">04 STEPS TO GLORY</p>
           </div>
-        </div>
-      </section>
-
-      {/* ── 7. FEATURED PRODUCTS GRID ── */}
-      <section className="relative z-20 bg-nivis-black py-10 sm:py-12 md:py-16 px-4 md:px-8">
-        <div className="max-w-[1200px] mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            viewport={{ once: true }}
-            className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 md:mb-10 gap-4"
-          >
-            <div>
-              <span className="text-[8px] md:text-[9px] font-mono tracking-[0.4em] text-nivis-neon uppercase block mb-1 md:mb-2">SELECCIÓN DESTACADA</span>
-              <h2 className="text-2xl sm:text-3xl md:text-5xl font-black uppercase tracking-tighter leading-[0.85]">Los más<br className="hidden md:block" /> vendidos.</h2>
-            </div>
-            <button
-              onClick={() => navigate('/shop')}
-              className="bg-white/5 border border-white/10 px-4 md:px-6 py-2 md:py-3 text-[8px] md:text-[10px] font-black uppercase tracking-widest hover:bg-nivis-neon hover:text-black hover:border-nivis-neon transition-all whitespace-nowrap"
-            >
-              Ver catálogo →
-            </button>
-          </motion.div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-            {featuredProducts.map((product, index) => (
-              <motion.div
-                key={product.id}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.08 }}
-                viewport={{ once: true }}
-                onClick={() => { navigate(`/product/${product.id}`); window.scrollTo(0, 0); }}
-                className="cursor-pointer group bg-[#111] rounded-xl overflow-hidden border border-white/5 hover:border-white/15 transition-all"
-              >
-                <div className="relative aspect-3/4 overflow-hidden">
-                  <img src={product.img} alt={product.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" />
-                  <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
-                  <div className="absolute top-2 right-2 bg-nivis-neon text-black px-1.5 py-0.5 text-[8px] md:text-[10px] font-black">${product.price.toLocaleString()}</div>
-                  <div className="absolute top-2 left-2 bg-black/50 backdrop-blur-sm px-1.5 py-0.5 border border-white/10 rounded-sm">
-                    <span className="text-[5px] md:text-[7px] font-mono tracking-[0.2em] text-nivis-neon uppercase">{product.category}</span>
-                  </div>
-                </div>
-                <div className="p-3 md:p-4">
-                  <h3 className="text-[9px] md:text-xs font-black uppercase tracking-tight truncate mb-0.5">{product.name}</h3>
-                  <p className="text-[6px] md:text-[8px] font-mono text-white/20 uppercase tracking-widest truncate">REF: {product.id} // ARCHIVE</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 8. STATS BAR ── */}
-      <section className="relative z-20 py-10 sm:py-12 md:py-20 px-4 md:px-8 overflow-hidden">
-        <div className="absolute inset-0 bg-linear-to-r from-nivis-neon/5 via-transparent to-purple-500/5" />
-        <div className="max-w-[1400px] mx-auto relative z-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
-            {[
-              { value: '5.000+', label: 'Clientes activos', icon: '👥' },
-              { value: '32', label: 'Diseños exclusivos', icon: '🎨' },
-              { value: '100%', label: 'Algodón premium', icon: '🧵' },
-              { value: 'FREE', label: 'Envío nacional', icon: '🚚' },
-            ].map((stat, idx) => (
-              <motion.div
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            {buySteps.map((feat, idx) => (
+              <motion.div 
                 key={idx}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                transition={{ duration: 0.6, delay: idx * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-[#111]/60 backdrop-blur-xl border border-white/5 rounded-xl p-4 sm:p-6 md:p-8 text-center hover:border-white/15 transition-all"
+                className="bg-[#0c0c0c] p-10 md:p-12 border border-white/5 hover:border-nivis-neon/30 transition-all group relative overflow-hidden"
               >
-                <div className="text-xl sm:text-2xl md:text-3xl mb-2 md:mb-4">{stat.icon}</div>
-                <h3 className="text-lg sm:text-xl md:text-3xl font-black tracking-tighter mb-0.5 md:mb-2">{stat.value}</h3>
-                <p className="text-[8px] sm:text-[9px] md:text-[10px] font-mono text-white/30 uppercase tracking-widest">{stat.label}</p>
+                <div className="absolute top-0 right-0 p-8 text-7xl font-black text-white/[0.02] group-hover:text-nivis-neon/[0.05] transition-colors pointer-events-none">
+                  {feat.step}
+                </div>
+                <div className="text-4xl mb-8 group-hover:scale-110 transition-transform origin-left">{feat.icon}</div>
+                <h3 className="text-lg font-black uppercase tracking-tight mb-4 group-hover:text-nivis-neon transition-colors">{feat.title}</h3>
+                <p className="text-[10px] text-white/30 leading-relaxed font-mono tracking-widest uppercase">{feat.desc}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── 9. BRAND PHILOSOPHY ── */}
-      <section className="relative z-30 bg-nivis-black py-16 sm:py-24 md:py-40 px-4 md:px-8 border-t border-white/5 overflow-hidden">
-        <div className="max-w-[1600px] mx-auto flex flex-col items-center">
+      {/* ── 5. ABOUT THE FOUNDER / CEO CTA (ENHANCED) ── */}
+      <section className="relative z-20 py-32 md:py-52 px-6 overflow-hidden bg-nivis-black">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,255,60,0.03)_0%,transparent_70%)] pointer-events-none" />
+        <div className="max-w-[1000px] mx-auto text-center relative z-10">
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1 }}
-            className="text-center"
-          >
-            <h3 className="text-4xl sm:text-6xl md:text-[100px] lg:text-[120px] font-black uppercase tracking-tighter leading-none mb-6 md:mb-12">
-              Basketball<br />Culture<br />Meets<br />Style.
-            </h3>
-            <motion.div
-              initial={{ width: 0 }}
-              whileInView={{ width: 80 }}
-              transition={{ duration: 1, delay: 0.5 }}
-              className="h-1.5 bg-nivis-neon mx-auto"
-            />
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="mt-10 sm:mt-16 md:mt-24 grid grid-cols-3 gap-6 md:gap-12 w-full text-center"
+            transition={{ duration: 1 }}
+            viewport={{ once: true }}
+            className="space-y-10 md:space-y-16"
           >
-            {[
-              { title: 'Innovation', sub: 'Algodón Premium 100%' },
-              { title: 'Durability', sub: 'Basketball Culture' },
-              { title: 'Vision', sub: 'Archive v1.024' },
-            ].map((item, i) => (
-              <div key={i} className="space-y-2 md:space-y-4">
-                <h4 className="text-[8px] sm:text-[9px] md:text-[10px] font-mono text-nivis-neon uppercase tracking-widest">{item.title}</h4>
-                <p className="text-[8px] sm:text-[10px] md:text-xs text-white/40 uppercase font-bold tracking-widest">{item.sub}</p>
-              </div>
-            ))}
+            <div className="inline-block px-4 py-1 border border-nivis-neon/30 rounded-full">
+              <span className="text-[9px] md:text-[10px] font-mono text-nivis-neon uppercase tracking-[0.4em]">ORIGIN_STORY</span>
+            </div>
+            
+            <h2 className="text-5xl sm:text-7xl md:text-9xl font-black uppercase tracking-tighter leading-[0.8] text-white">
+              De la cancha<br />al diseño.
+            </h2>
+            
+            <p className="text-sm md:text-xl text-white/40 font-mono leading-relaxed uppercase tracking-[0.2em] max-w-2xl mx-auto">
+              Conocé la trayectoria de nuestro Fundador. Del Club Belgrano a la cima del streetwear con mentalidad de campeón.
+            </p>
+            
+            <button
+              onClick={() => navigate('/sobre-mi')}
+              className="relative inline-flex items-center justify-center px-12 py-6 overflow-hidden font-black text-xs uppercase tracking-[0.4em] text-nivis-black bg-nivis-neon transition-all hover:bg-white group"
+            >
+              <span className="relative z-10">Conocer la Historia</span>
+            </button>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── 6. BIG BRAND PARALLAX (REFINED) ── */}
+      <section className="relative z-20 bg-[#050505] py-32 md:py-60 overflow-hidden flex items-center justify-center">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,255,60,0.05)_0,rgba(5,5,5,1)_80%)]" />
+        <div className="max-w-[1600px] mx-auto text-center relative z-10 px-6">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            viewport={{ once: true }}
+          >
+            <h3 className="text-[14vw] md:text-[180px] lg:text-[220px] font-black uppercase tracking-tighter leading-[0.75] text-transparent bg-clip-text bg-linear-to-b from-white via-white/50 to-transparent">
+              Malibu<br />Style.
+            </h3>
+            <p className="mt-12 text-[10px] md:text-xs font-mono text-nivis-neon uppercase tracking-[0.8em]">UNSTOPPABLE_LEGACY</p>
           </motion.div>
         </div>
       </section>
 
       {/* ── BOTTOM MARQUEE ── */}
-      <div className="relative z-30 bg-nivis-neon py-2 text-nivis-black overflow-hidden flex whitespace-nowrap">
-        <motion.div
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="flex gap-8 sm:gap-12 md:gap-20 text-[8px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-widest"
-        >
-          <span>MALIBU STYLES // BASKETBALL CULTURE // STREETWEAR PREMIUM // HIGH PERFORMANCE APPAREL // </span>
-          <span>MALIBU STYLES // BASKETBALL CULTURE // STREETWEAR PREMIUM // HIGH PERFORMANCE APPAREL // </span>
-        </motion.div>
+      <div className="relative z-30 bg-nivis-neon py-4 text-nivis-black overflow-hidden flex whitespace-nowrap">
+        <div className="flex animate-marquee-slow text-[10px] md:text-xs font-black uppercase tracking-[0.4em]">
+          <span>MALIBU STYLES // BASKETBALL CULTURE // STREETWEAR PREMIUM // BELGRANO CULTURAL Y DEPORTIVO // </span>
+          <span>MALIBU STYLES // BASKETBALL CULTURE // STREETWEAR PREMIUM // BELGRANO CULTURAL Y DEPORTIVO // </span>
+        </div>
       </div>
+      
     </div>
   );
-};
-
-export default Home;
+}

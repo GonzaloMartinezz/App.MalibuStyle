@@ -13,6 +13,7 @@ import ProductDetail from './pages/ProductDetail';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
+import SobreMi from './pages/SobreMi';
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
               <Route path="/buzos" element={<Buzos />} />
               <Route path="/novedades" element={<Novedades />} />
               <Route path="/product/:id" element={<ProductDetail />} />
+              <Route path="/sobre-mi" element={<SobreMi />} />
               <Route path="/auth" element={<Login />} />
               <Route path="/register" element={<Register />} />
             </Route>

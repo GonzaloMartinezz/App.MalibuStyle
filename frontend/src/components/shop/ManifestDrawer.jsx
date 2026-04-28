@@ -129,6 +129,10 @@ export default function ManifestDrawer({ isOpen, onClose }) {
 
               <button
                 disabled={cart.length === 0}
+                onClick={() => {
+                  const message = `Hola! Quiero realizar un pedido:\n\n${cart.map(item => `- ${item.name} (Talle: ${item.size || 'N/A'}) x${item.quantity} - $${(item.price * item.quantity).toLocaleString()}`).join('\n')}\n\n*Total: $${cartTotal.toLocaleString()}*`;
+                  window.open(`https://wa.me/543816151413?text=${encodeURIComponent(message)}`, '_blank');
+                }}
                 className="w-full bg-nivis-neon text-nivis-black font-black uppercase tracking-widest py-4 hover:bg-white transition-all shadow-[0_0_30px_rgba(212,255,60,0.15)] disabled:opacity-30 disabled:cursor-not-allowed text-[11px]"
               >
                 FINALIZAR COMPRA
