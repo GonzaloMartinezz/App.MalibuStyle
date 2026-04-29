@@ -9,11 +9,12 @@ const chapters = [
     id: 'inicio',
     year: '2012',
     tag: 'EL COMIENZO',
-    title: 'La primera\nvez que\ntoqué una\ncancha.',
+    title: 'La primera vez que conocí este deporte.',
     body: 'Desde muy chico supe que el básquet era mi vida. Me uní al Club Belgrano Cultural y Deportivo en Tucumán, y desde el primer día dejé todo en la cancha. Con la camiseta número 9 ya sentía que pertenecía a algo más grande.',
     photos: [
-      { src: '/2.PNG', caption: 'Primer trofeo. Primera medalla. Belgrano #9.', size: 'hero' },
-      { src: '/4.jpg', caption: 'La cancha de Belgrano, mi segundo hogar.', size: 'side' },
+      { src: '/2.PNG', caption: 'Primeros pasos en el básquet. Pura ilusión.', size: 'hero' },
+      { src: '/4.jpg', caption: 'Entrenando fundamentos y técnica.', size: 'side' },
+      { src: '/23.JPG', caption: 'Entrenando fundamentos y técnica.', size: 'side' },
     ],
     accent: '#D4FF3C',
   },
@@ -24,8 +25,15 @@ const chapters = [
     title: 'El equipo\nlo es todo.',
     body: 'Años de entrenamiento, sacrificio y crecimiento junto a mis compañeros. Las categorías formativas de Belgrano me enseñaron lo más valioso: que ningún campeón se hace solo. La unión del equipo era nuestra mayor fortaleza.',
     photos: [
-      { src: '/8.JPG', caption: 'El ritual antes del partido. Belgrano unidos.', size: 'hero' },
-      { src: '/6.jpg', caption: 'Partido nocturno en la cancha histórica.', size: 'side' },
+      { src: '/24.JPG', caption: 'Compañerismo y crecimiento.', size: 'medium' },
+      { src: '/21.jpeg', caption: 'Compañerismo y crecimiento.', size: 'medium' },
+      { src: '/16.jpeg', caption: 'La previa de un partido clave.', size: 'medium' },
+      { src: '/19.jpeg', caption: 'La previa de un partido clave.', size: 'medium' },
+      { src: '/7.JPG', caption: 'Ritual de equipo en el vestuario.', size: 'medium' },
+      { src: '/25.JPG', caption: 'Compañerismo y crecimiento.', size: 'medium' },
+      { src: '/31.jpeg', caption: 'Compañerismo y crecimiento.', size: 'medium' },
+      { src: '/34.jpeg', caption: 'Compañerismo y crecimiento.', size: 'medium' },
+      { src: '/35.PNG', caption: 'Compañerismo y crecimiento.', size: 'medium' },
     ],
     accent: '#3C9EFF',
   },
@@ -36,69 +44,28 @@ const chapters = [
     title: 'Vestir la\ncamiseta\nde mi\nprovincia.',
     body: 'El sueño de cualquier jugador tucumano. Me convocaron para representar a Tucumán y no lo podía creer. Pararse en el centro de la cancha con la camiseta de la selección provincial fue uno de los momentos más importantes de mi vida.',
     photos: [
-      { src: '/3.JPG', caption: 'Superdomo La Rioja — Campeón con Tucumán.', size: 'hero' },
-      { src: '/5.jpeg', caption: 'Con la copa de Tucumán. El orgullo de la provincia.', size: 'side' },
+      { src: '/5.jpeg', caption: 'Representando a la provincia.', size: 'HERO' },
+      { src: '/29.JPG', caption: 'Representando a la provincia.', size: 'HERO' },
+      { src: '/3.JPG', caption: 'Representando a la provincia.', size: 'HERO' },
+      { src: '/13.jpeg', caption: 'Representando a la provincia.', size: 'HERO' },
+      { src: '/14.jpeg', caption: 'Orgullo tucumano en el torneo.', size: 'HERO' },
+      { src: '/33.jpeg', caption: 'Orgullo tucumano en el torneo.', size: 'HERO' },
     ],
     accent: '#FF6B35',
   },
   {
     id: 'primera',
     year: '2021',
-    tag: 'DEBUT EN PRIMERA',
-    title: 'El día\nque debuté\nen Primera.',
-    body: 'Debutar en Primera División con Belgrano CyD fue el resultado de años de trabajo. Pisar ese parqué con las tribunas llenas, con la gente alentando, es una sensación que no se puede describir con palabras. Solo se siente.',
+    tag: 'PRIMERA DIVISIÓN',
+    title: 'Disfrutando del proceso y cada momento.',
+    body: 'Al vivir cada día enfocado y esforzandome para mejorar día a día, aprendí a valorar cada momento, cada entrenamiento, cada partido.',
     photos: [
-      { src: '/12.JPG', caption: 'Primera División. Belgrano #9. Tribuna llena.', size: 'hero' },
-      { src: '/1.jpg', caption: 'Controlando el juego. Liga Tucumana.', size: 'side' },
-    ],
-    accent: '#D4FF3C',
-  },
-  {
-    id: 'campeon',
-    year: '2022',
-    tag: 'CAMPEÓN',
-    title: 'La noche\nque fuimos\ncampeones.',
-    body: 'El campeonato con Belgrano fue la cima de mi carrera como jugador. El esfuerzo de toda una vida cristalizado en ese momento en que el equipo se abraza en el centro de la cancha. Nunca voy a olvidar esa noche.',
-    photos: [
-      { src: '/18.PNG', caption: '75 Aniversario de Belgrano. Campeones.', size: 'hero' },
-      { src: '/17.PNG', caption: 'La celebración en el corazón de la cancha.', size: 'medium' },
-      { src: '/9.JPG', caption: 'El abrazo que lo dice todo.', size: 'side' },
-    ],
-    accent: '#FFD700',
-  },
-  {
-    id: 'familia',
-    year: '2022',
-    tag: 'LA FAMILIA',
-    title: 'Detrás de\ncada trofeo,\nhay amor.',
-    body: 'El deporte me enseñó que los logros más importantes no se consiguen solos. Mi familia siempre estuvo en cada partido, en cada entrenamiento, en cada victoria y derrota. Son el motor de todo lo que hago.',
-    photos: [
-      { src: '/11.JPG', caption: 'Con mamá y el trofeo de campeón. El mejor abrazo.', size: 'hero' },
-      { src: '/10.JPG', caption: 'Con el cuerpo técnico de Belgrano CyD.', size: 'side' },
-    ],
-    accent: '#FF6B9D',
-  },
-  {
-    id: 'internacional',
-    year: '2023',
-    tag: 'INTERNACIONALES',
-    title: 'Cruzando\nfronteras.',
-    body: 'La experiencia de representar a Tucumán en torneos internacionales fue transformadora. Competir en Chile con un equipo 3x3 me mostró que el básquet no tiene fronteras y que el esfuerzo siempre lleva más lejos de lo que imaginás.',
-    photos: [
-      { src: '/16.jpeg', caption: 'Vallenar, Chile — Torneo Internacional 3x3.', size: 'hero' },
-      { src: '/13.jpeg', caption: 'Tucumán de noche, campeón en el exterior.', size: 'side' },
-    ],
-    accent: '#3C9EFF',
-  },
-  {
-    id: 'ceo',
-    year: '2024',
-    tag: 'FOUNDER & CEO',
-    title: 'Del parqué\nal negocio.',
-    body: 'Todo lo que aprendí en la cancha — la disciplina, la resiliencia, el trabajo en equipo, la mentalidad ganadora — lo trasladé a Malibu Style. No fundé solo una marca de ropa. Fundé una filosofía de vida.',
-    photos: [
-      { src: '/14.jpeg', caption: 'Selección Tucumán — El último capítulo antes del primero.', size: 'hero' },
-      { src: '/15.jpeg', caption: 'El vestuario. El lugar donde se forja el campeón.', size: 'side' },
+      { src: '/1.jpg', caption: 'Concentración al máximo.', size: 'medium' },
+      { src: '/6.jpg', caption: 'Defendiendo la camiseta.', size: 'medium' },
+      { src: '/12.JPG', caption: 'Acción de juego.', size: 'medium' },
+      { src: '/36.JPG', caption: 'Acción de juego.', size: 'medium' },
+      { src: '/41.jpg', caption: 'Acción de juego.', size: 'medium' },
+      { src: '/42.jpeg', caption: 'Acción de juego.', size: 'medium' },
     ],
     accent: '#D4FF3C',
     isFinal: true,
@@ -135,7 +102,7 @@ function PhotoCard({ src, caption, size, delay = 0, accent = '#D4FF3C' }) {
       {!loaded && (
         <div className="absolute inset-0 bg-white/5 animate-pulse rounded-2xl md:rounded-3xl" />
       )}
-      
+
       <img
         src={src}
         alt={caption}
@@ -143,16 +110,16 @@ function PhotoCard({ src, caption, size, delay = 0, accent = '#D4FF3C' }) {
         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         style={{ opacity: loaded ? 1 : 0, transition: 'opacity 0.5s' }}
       />
-      
+
       {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500" />
-      
+      <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500" />
+
       {/* Bottom accent line */}
       <div
         className="absolute bottom-0 left-0 h-[3px] w-0 group-hover:w-full transition-all duration-700 rounded-full"
         style={{ backgroundColor: accent }}
       />
-      
+
       {/* Caption */}
       <div className="absolute bottom-0 left-0 w-full p-4 md:p-6 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
         <p className="text-[9px] md:text-[10px] font-mono text-white/70 uppercase tracking-[0.2em] leading-relaxed">
@@ -174,7 +141,7 @@ function ChapterSection({ chapter, index }) {
       className="relative py-20 md:py-32 px-4 sm:px-6 md:px-12 overflow-hidden"
     >
       {/* Chapter number watermark */}
-      <div className="absolute -top-8 right-4 md:right-12 text-[120px] md:text-[200px] font-black text-white/[0.03] leading-none select-none pointer-events-none">
+      <div className="absolute -top-8 right-4 md:right-12 text-[120px] md:text-[200px] font-black text-white/3 leading-none select-none pointer-events-none">
         {String(index + 1).padStart(2, '0')}
       </div>
 
@@ -205,11 +172,10 @@ function ChapterSection({ chapter, index }) {
         </motion.div>
 
         {/* Photos Grid */}
-        <div className={`grid gap-3 md:gap-4 ${
-          chapter.photos.length === 3
-            ? 'grid-cols-3 grid-rows-2'
-            : 'grid-cols-3'
-        }`}>
+        <div className={`grid gap-3 md:gap-4 ${chapter.photos.length === 3
+          ? 'grid-cols-3 grid-rows-2'
+          : 'grid-cols-3'
+          }`}>
           {chapter.photos.map((photo, i) => (
             <PhotoCard
               key={i}
@@ -235,7 +201,7 @@ function ChapterSection({ chapter, index }) {
               DE LA CANCHA AL NEGOCIO
             </p>
             <h3 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-white mb-8">
-              Malibu Style nació<br />de esa misma garra.
+              Malibu Style nació<br />de la Experiencia de años en el deporte.
             </h3>
           </motion.div>
         )}
@@ -273,8 +239,8 @@ export default function SobreMi() {
             alt="Belgrano Campeón"
             className="w-full h-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-nivis-black via-nivis-black/60 to-nivis-black/20" />
-          <div className="absolute inset-0 bg-gradient-to-r from-nivis-black/50 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-nivis-black via-nivis-black/60 to-nivis-black/20" />
+          <div className="absolute inset-0 bg-linear-to-r from-nivis-black/50 via-transparent to-transparent" />
         </motion.div>
 
         {/* Hero Text */}
@@ -307,7 +273,7 @@ export default function SobreMi() {
           className="absolute bottom-8 right-8 md:right-12 flex flex-col items-center gap-2"
         >
           <span className="text-[8px] font-mono tracking-[0.3em] text-white/30 uppercase">Scroll</span>
-          <div className="w-px h-16 bg-gradient-to-b from-white/30 to-transparent" />
+          <div className="w-px h-16 bg-linear-to-b from-white/30 to-transparent" />
         </motion.div>
       </section>
 
@@ -344,7 +310,7 @@ export default function SobreMi() {
           >
             <span className="text-[80px] md:text-[120px] text-nivis-neon/20 font-black leading-none block mb-4">"</span>
             <blockquote className="text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tighter text-white leading-[1.1] -mt-12">
-              Toda mi vida jugué al básquet. Ese deporte no solo me hizo jugador, me hizo persona.
+              Esta es mi historia, esta es la pasión que me llevó a crear la marca que hoy te viste.
             </blockquote>
             <div className="mt-8 flex items-center justify-center gap-4">
               <div className="h-px w-16 bg-nivis-neon/40" />
@@ -374,7 +340,7 @@ export default function SobreMi() {
               LA SIGUIENTE JUGADA
             </span>
             <h2 className="text-5xl sm:text-7xl md:text-[100px] font-black uppercase tracking-tighter leading-[0.85] text-white mb-12">
-              Ahora<br />viste con<br />la misma<br />garra.
+              Ahora<br />vestí con<br />la misma<br />garra.
             </h2>
             <button
               onClick={() => navigate('/shop')}

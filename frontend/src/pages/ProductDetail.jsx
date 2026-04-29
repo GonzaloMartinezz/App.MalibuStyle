@@ -178,7 +178,7 @@ export default function ProductDetail() {
                 onClick={handleAdd}
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full bg-white text-black font-black uppercase tracking-[0.1em] py-4 hover:bg-nivis-neon transition-all flex items-center justify-center gap-3 text-[10px]"
+                className="w-full bg-white text-black font-black uppercase tracking-widest py-4 hover:bg-nivis-neon transition-all flex items-center justify-center gap-3 text-[10px]"
               >
                 AGREGAR AL CARRITO
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>

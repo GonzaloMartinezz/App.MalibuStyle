@@ -10,10 +10,10 @@ export default function MainLayout() {
       </main>
 
       {/* Global Footer */}
-      <footer className="bg-nivis-black border-t border-white/5 py-12 md:py-20 px-4 md:px-8">
+      <footer className="relative z-20 bg-nivis-black border-t border-white/5 py-12 md:py-20 px-4 md:px-8">
         <div className="max-w-[1600px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
           <div className="space-y-4 md:space-y-6 col-span-2 md:col-span-1">
-            <h3 className="text-xl md:text-2xl font-black uppercase tracking-tighter">MALIBU STYLES</h3>
+            <h3 className="text-xl md:text-2xl font-black uppercase tracking-tighter">MALIBU STYLESS</h3>
             <p className="text-[10px] md:text-xs text-white/40 leading-relaxed uppercase font-mono tracking-widest">
               Streetwear premium <br /> basketball culture.
             </p>
@@ -42,7 +42,7 @@ export default function MainLayout() {
           </div>
         </div>
         <div className="max-w-[1600px] mx-auto mt-12 md:mt-20 pt-6 md:pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-4 text-[8px] md:text-[10px] font-mono text-white/20 uppercase tracking-[0.2em] md:tracking-[0.3em]">
-          <span>© 2024 MALIBU STYLE</span>
+          <span>© 2024 MALIBU STYLESS</span>
           <span>V1.0</span>
         </div>
       </footer>

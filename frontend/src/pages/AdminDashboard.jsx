@@ -207,7 +207,7 @@ const AdminDashboard = () => {
             { name:'Diego Quispe', email:'diego@mail.com', purchases:5, value:'$120.000', last:'Hace 1d' },
             { name:'Camila Ríos', email:'cami@mail.com', purchases:23, value:'$890.000', last:'Hace 3d' },
           ].map((c,i) => (
-            <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02]">
+            <tr key={i} className="border-b border-white/5 hover:bg-white/2">
               <td className="py-3 px-3"><div><p className="text-xs font-bold">{c.name}</p><p className="text-[9px] text-white/30 font-mono">{c.email}</p></div></td>
               <td className="py-3 px-3 text-xs">{c.purchases}</td>
               <td className="py-3 px-3 text-xs font-black text-nivis-neon">{c.value}</td>

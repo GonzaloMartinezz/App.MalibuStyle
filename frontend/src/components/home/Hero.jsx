@@ -5,7 +5,7 @@ export default function Hero() {
   const navigate = useNavigate();
 
   return (
-    <section className="relative w-full h-[85svh] min-h-[500px] flex items-center justify-center overflow-hidden bg-nivis-black pt-16 md:pt-0">
+    <section className="relative w-full h-screen min-h-[500px] flex items-center justify-center overflow-hidden bg-nivis-black pt-16 md:pt-0">
 
       {/* Cinematic Background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
@@ -18,10 +18,10 @@ export default function Hero() {
         />
         <div className="absolute inset-0 bg-linear-to-t from-nivis-black via-nivis-black/60 to-transparent" />
         <div className="absolute inset-0 bg-linear-to-r from-nivis-black/80 via-transparent to-transparent" />
-        <motion.div 
+        <motion.div
           animate={{ opacity: [0.3, 0.5, 0.3], scale: [1, 1.05, 1] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[30%] left-[20%] w-[50vw] h-[50vw] max-w-[800px] max-h-[800px] bg-nivis-neon/15 blur-[120px] rounded-full pointer-events-none" 
+          className="absolute top-[30%] left-[20%] w-[50vw] h-[50vw] max-w-[800px] max-h-[800px] bg-nivis-neon/15 blur-[120px] rounded-full pointer-events-none"
         />
       </div>
 
@@ -33,12 +33,12 @@ export default function Hero() {
         className="relative z-20 w-[90%] max-w-[1000px] mx-auto glass-panel p-6 sm:p-10 md:p-12 lg:p-14 rounded-2xl md:rounded-[30px] shadow-2xl overflow-hidden mt-8 md:mt-0"
       >
         {/* Glow Line Top */}
-        <div className="absolute top-0 left-0 w-full h-[1px] bg-linear-to-r from-transparent via-nivis-neon/40 to-transparent" />
-        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-linear-to-r from-transparent via-white/10 to-transparent" />
+        <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-nivis-neon/40 to-transparent" />
+        <div className="absolute bottom-0 left-0 w-full h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
 
         {/* HUD Markers */}
         <div className="absolute top-0 left-0 w-full px-6 py-4 md:px-8 md:py-5 flex justify-between items-center text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.3em] text-nivis-neon uppercase">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 1 }}
@@ -47,7 +47,7 @@ export default function Hero() {
             <div className="w-1.5 h-1.5 bg-nivis-neon animate-pulse rounded-full" />
             <span className="hidden xs:inline text-white/80">MALIBU STYLES //</span> <span className="font-bold">ARCHIVE</span>
           </motion.div>
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2 }}
@@ -55,7 +55,7 @@ export default function Hero() {
           >
             BASKETBALL CULTURE
           </motion.div>
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 1 }}
@@ -67,10 +67,10 @@ export default function Hero() {
         </div>
 
         <div className="mt-6 md:mt-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-8 md:gap-12">
-          
+
           {/* Typography Section */}
           <div className="relative z-10 w-full md:w-auto flex-1">
-            <motion.h1 
+            <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.5 }}
@@ -80,8 +80,8 @@ export default function Hero() {
               <span className="block">de basket</span>
               <span className="block text-transparent bg-clip-text bg-linear-to-r from-nivis-neon to-nivis-neon/70">al extremo.</span>
             </motion.h1>
-            
-            <motion.p 
+
+            <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8 }}
@@ -93,7 +93,7 @@ export default function Hero() {
 
           {/* Action Section */}
           <div className="flex flex-col gap-4 md:gap-6 w-full md:w-auto md:min-w-[260px]">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.9 }}
@@ -106,7 +106,7 @@ export default function Hero() {
                 // HIGH PERFORMANCE
               </p>
             </motion.div>
-            
+
             <motion.button
               whileHover={{ scale: 1.03, backgroundColor: '#e2ff66' }}
               whileTap={{ scale: 0.97 }}

@@ -27,7 +27,7 @@ export default function Home() {
 
   return (
     <div ref={containerRef} className="bg-nivis-black relative min-h-screen font-sans">
-      
+
       {/* ── 1. HERO ── */}
       <motion.div style={{ opacity }}>
         <Hero />
@@ -37,19 +37,19 @@ export default function Home() {
       <section className="relative z-20 py-8 md:py-12 overflow-hidden bg-nivis-black border-y border-white/5">
         <div className="absolute top-0 left-0 w-32 h-full bg-linear-to-r from-nivis-black to-transparent z-10 pointer-events-none" />
         <div className="absolute top-0 right-0 w-32 h-full bg-linear-to-l from-nivis-black to-transparent z-10 pointer-events-none" />
-        
+
         <div className="flex w-[200%] animate-marquee hover:[animation-play-state:paused] items-center">
-          <div className="px-8 flex-shrink-0 text-white/30 font-mono text-xs tracking-widest uppercase">ÚLTIMOS INGRESOS</div>
+          <div className="px-8 shrink-0 text-white/30 font-mono text-xs tracking-widest uppercase">ÚLTIMOS INGRESOS</div>
           {[...marqueeItems, ...marqueeItems].map((item, idx) => (
-            <div 
+            <div
               key={`${item.id}-${idx}`}
               onClick={() => navigate(`/product/${item.id}`)}
-              className="w-[140px] sm:w-[180px] md:w-[220px] flex-shrink-0 mx-2 md:mx-3 cursor-pointer group"
+              className="w-[180px] sm:w-[240px] md:w-[300px] shrink-0 mx-3 md:mx-5 cursor-pointer group"
             >
-              <div className="relative aspect-[4/5] rounded-xl overflow-hidden bg-[#111] border border-white/5 group-hover:border-nivis-neon/50 transition-all duration-500">
-                <img 
-                  src={item.img} 
-                  alt={item.name} 
+              <div className="relative aspect-4/5 rounded-xl overflow-hidden bg-[#111] border border-white/5 group-hover:border-nivis-neon/50 transition-all duration-500">
+                <img
+                  src={item.img}
+                  alt={item.name}
                   className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity" />
@@ -71,17 +71,17 @@ export default function Home() {
         <div className="absolute top-0 right-0 w-1/3 h-full bg-nivis-neon/5 blur-[120px] pointer-events-none" />
         <div className="max-w-[1400px] mx-auto px-6 md:px-12">
           <div className="flex flex-col lg:flex-row gap-16 md:gap-24 items-center">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 1.2 }}
               viewport={{ once: true }}
               className="w-full lg:w-1/2 relative group"
             >
-              <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
-                <img 
-                  src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=1200&q=90" 
-                  alt="Basketball Culture" 
+              <div className="relative aspect-4/5 rounded-2xl overflow-hidden shadow-2xl">
+                <img
+                  src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=1200&q=90"
+                  alt="Basketball Culture"
                   className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-black via-transparent to-transparent" />
@@ -92,8 +92,8 @@ export default function Home() {
                 <h4 className="text-2xl md:text-3xl font-black uppercase tracking-tighter">BORN IN<br />COURT.</h4>
               </div>
             </motion.div>
-            
-            <motion.div 
+
+            <motion.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 1.2, delay: 0.2 }}
@@ -101,15 +101,17 @@ export default function Home() {
               className="w-full lg:w-1/2 space-y-8 md:space-y-12"
             >
               <div className="space-y-4 md:space-y-6">
-                <span className="text-[10px] font-mono text-nivis-neon uppercase tracking-[0.5em] block">INTANGIBLE_ASSET</span>
-                <h2 className="text-4xl md:text-7xl font-black uppercase tracking-tighter leading-[0.85] text-white">
-                  Cultura <br />Intransferible.
+                <span className="text-[10px] font-mono text-nivis-neon uppercase tracking-[0.5em] block mb-2">NUESTRO ADN // FILOSOFÍA</span>
+                <h2 className="text-5xl sm:text-6xl md:text-8xl font-serif italic tracking-tighter leading-[0.85] text-white">
+                  Mentalidad <br /><span className="text-nivis-neon not-italic font-black uppercase">Ganadora.</span>
                 </h2>
-                <p className="text-sm md:text-lg text-white/40 font-mono leading-relaxed uppercase tracking-widest max-w-lg">
+                <p className="text-sm md:text-lg text-white/60 font-sans leading-relaxed tracking-wide max-w-xl">
                   No fabricamos ropa, encapsulamos la intensidad del juego. Cada fibra de Malibu Style respira la disciplina del parqué y la libertad del asfalto.
+                  <br /><br />
+                  La excelencia no es un acto, es un hábito. Por eso nuestras prendas están diseñadas para acompañarte tanto en el entrenamiento más duro como en tu día a día, ofreciendo la máxima comodidad sin comprometer el estilo urbano.
                 </p>
               </div>
-              
+
               <div className="grid grid-cols-2 gap-8 md:gap-12 py-8 border-y border-white/5">
                 <div>
                   <h4 className="text-2xl md:text-4xl font-black text-nivis-neon mb-1">PREMIUM</h4>
@@ -121,12 +123,12 @@ export default function Home() {
                 </div>
               </div>
 
-              <button 
+              <button
                 onClick={() => navigate('/shop')}
                 className="group flex items-center gap-4 text-xs font-black uppercase tracking-[0.3em] hover:text-nivis-neon transition-colors"
               >
                 <span>Explorar el Archivo</span>
-                <span className="w-12 h-[1px] bg-white group-hover:bg-nivis-neon transition-all group-hover:w-16" />
+                <span className="w-12 h-px bg-white group-hover:bg-nivis-neon transition-all group-hover:w-16" />
               </button>
             </motion.div>
           </div>
@@ -143,10 +145,10 @@ export default function Home() {
             </div>
             <p className="text-[10px] font-mono text-white/20 uppercase tracking-widest text-right">04 STEPS TO GLORY</p>
           </div>
-          
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {buySteps.map((feat, idx) => (
-              <motion.div 
+              <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -154,7 +156,7 @@ export default function Home() {
                 viewport={{ once: true }}
                 className="bg-[#0c0c0c] p-10 md:p-12 border border-white/5 hover:border-nivis-neon/30 transition-all group relative overflow-hidden"
               >
-                <div className="absolute top-0 right-0 p-8 text-7xl font-black text-white/[0.02] group-hover:text-nivis-neon/[0.05] transition-colors pointer-events-none">
+                <div className="absolute top-0 right-0 p-8 text-7xl font-black text-white/2 group-hover:text-nivis-neon/5 transition-colors pointer-events-none">
                   {feat.step}
                 </div>
                 <div className="text-4xl mb-8 group-hover:scale-110 transition-transform origin-left">{feat.icon}</div>
@@ -180,15 +182,15 @@ export default function Home() {
             <div className="inline-block px-4 py-1 border border-nivis-neon/30 rounded-full">
               <span className="text-[9px] md:text-[10px] font-mono text-nivis-neon uppercase tracking-[0.4em]">ORIGIN_STORY</span>
             </div>
-            
+
             <h2 className="text-5xl sm:text-7xl md:text-9xl font-black uppercase tracking-tighter leading-[0.8] text-white">
               De la cancha<br />al diseño.
             </h2>
-            
+
             <p className="text-sm md:text-xl text-white/40 font-mono leading-relaxed uppercase tracking-[0.2em] max-w-2xl mx-auto">
               Conocé la trayectoria de nuestro Fundador. Del Club Belgrano a la cima del streetwear con mentalidad de campeón.
             </p>
-            
+
             <button
               onClick={() => navigate('/sobre-mi')}
               className="relative inline-flex items-center justify-center px-12 py-6 overflow-hidden font-black text-xs uppercase tracking-[0.4em] text-nivis-black bg-nivis-neon transition-all hover:bg-white group"
@@ -210,7 +212,7 @@ export default function Home() {
             viewport={{ once: true }}
           >
             <h3 className="text-[14vw] md:text-[180px] lg:text-[220px] font-black uppercase tracking-tighter leading-[0.75] text-transparent bg-clip-text bg-linear-to-b from-white via-white/50 to-transparent">
-              Malibu<br />Style.
+              Malibu<br />Styless.
             </h3>
             <p className="mt-12 text-[10px] md:text-xs font-mono text-nivis-neon uppercase tracking-[0.8em]">UNSTOPPABLE_LEGACY</p>
           </motion.div>
@@ -220,11 +222,11 @@ export default function Home() {
       {/* ── BOTTOM MARQUEE ── */}
       <div className="relative z-30 bg-nivis-neon py-4 text-nivis-black overflow-hidden flex whitespace-nowrap">
         <div className="flex animate-marquee-slow text-[10px] md:text-xs font-black uppercase tracking-[0.4em]">
-          <span>MALIBU STYLES // BASKETBALL CULTURE // STREETWEAR PREMIUM // BELGRANO CULTURAL Y DEPORTIVO // </span>
-          <span>MALIBU STYLES // BASKETBALL CULTURE // STREETWEAR PREMIUM // BELGRANO CULTURAL Y DEPORTIVO // </span>
+          <span>MALIBU STYLESS // BASKETBALL CULTURE // STREETWEAR PREMIUM // BELGRANO CULTURAL Y DEPORTIVO // </span>
+          <span>MALIBU STYLESS // BASKETBALL CULTURE // STREETWEAR PREMIUM // BELGRANO CULTURAL Y DEPORTIVO // </span>
         </div>
       </div>
-      
+
     </div>
   );
 }

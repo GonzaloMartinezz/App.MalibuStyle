@@ -123,14 +123,67 @@ export default function Novedades() {
             })}
           </div>
         </div>
+
+        {/* ── 5. ABOUT THE FOUNDER / CEO CTA ── */}
+        <section className="relative z-20 py-32 md:py-52 px-6 overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,255,60,0.03)_0%,transparent_70%)] pointer-events-none" />
+          <div className="max-w-[1000px] mx-auto text-center relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1 }}
+              viewport={{ once: true }}
+              className="space-y-10 md:space-y-16"
+            >
+              <div className="inline-block px-4 py-1 border border-nivis-neon/30 rounded-full">
+                <span className="text-[9px] md:text-[10px] font-mono text-nivis-neon uppercase tracking-[0.4em]">ORIGIN_STORY</span>
+              </div>
+              
+              <h2 className="text-5xl sm:text-7xl md:text-9xl font-black uppercase tracking-tighter leading-[0.8] text-white">
+                De la cancha<br />al diseño.
+              </h2>
+              
+              <p className="text-sm md:text-xl text-white/40 font-mono leading-relaxed uppercase tracking-[0.2em] max-w-2xl mx-auto">
+                Conocé la trayectoria de nuestro Fundador. Del Club Belgrano a la cima del streetwear con mentalidad de campeón.
+              </p>
+              
+              <button
+                onClick={() => navigate('/sobre-mi')}
+                className="relative inline-flex items-center justify-center px-12 py-6 overflow-hidden font-black text-xs uppercase tracking-[0.4em] text-nivis-black bg-nivis-neon transition-all hover:bg-white group"
+              >
+                <span className="relative z-10">Conocer la Historia</span>
+              </button>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ── 6. BIG BRAND PARALLAX ── */}
+        <section className="relative z-20 py-32 md:py-60 overflow-hidden flex items-center justify-center">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,255,60,0.05)_0,rgba(5,5,5,1)_80%)]" />
+          <div className="max-w-[1600px] mx-auto text-center relative z-10 px-6">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.5, ease: "easeOut" }}
+              viewport={{ once: true }}
+            >
+              <h3 className="text-[14vw] md:text-[180px] lg:text-[220px] font-black uppercase tracking-tighter leading-[0.75] text-transparent bg-clip-text bg-linear-to-b from-white via-white/50 to-transparent">
+                Malibu<br />Styless.
+              </h3>
+              <p className="mt-12 text-[10px] md:text-xs font-mono text-nivis-neon uppercase tracking-[0.8em]">UNSTOPPABLE_LEGACY</p>
+            </motion.div>
+          </div>
+        </section>
       </div>
+
       {/* BOTTOM MARQUEE */}
-      <div className="relative z-30 bg-nivis-neon py-4 text-nivis-black overflow-hidden flex whitespace-nowrap mt-20">
+      <div className="relative z-30 bg-nivis-neon py-4 text-nivis-black overflow-hidden flex whitespace-nowrap">
         <div className="flex animate-marquee-slow text-[10px] md:text-xs font-black uppercase tracking-[0.4em]">
-          <span>MALIBU STYLES // BASKETBALL CULTURE // NOVEDADES EXCLUSIVAS // BELGRANO CULTURAL Y DEPORTIVO // </span>
-          <span>MALIBU STYLES // BASKETBALL CULTURE // NOVEDADES EXCLUSIVAS // BELGRANO CULTURAL Y DEPORTIVO // </span>
+          <span>MALIBU STYLESS // BASKETBALL CULTURE // NOVEDADES EXCLUSIVAS // BELGRANO CULTURAL Y DEPORTIVO // </span>
+          <span>MALIBU STYLESS // BASKETBALL CULTURE // NOVEDADES EXCLUSIVAS // BELGRANO CULTURAL Y DEPORTIVO // </span>
         </div>
       </div>
     </div>
   );
 }
+
